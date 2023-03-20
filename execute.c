@@ -1,16 +1,15 @@
 #include "minishell.h"
 
-char *access_path(t_data *data)
+char *access_path(t_data *data, char **args)
 {
-    char *args;
-	args = "ls";
+    ;
 	char **split_path;
     int i;
     char *str;
     char *exe;
 
-    i = 0;
-    exe = ft_strjoin("/", args);
+    i = 0;  
+    exe = ft_strjoin("/", args[0]);
     split_path = ft_split(ft_get_value("PATH", data), ':');
     while (split_path[i])
     {
@@ -27,18 +26,22 @@ char *access_path(t_data *data)
     return(NULL);
 }
 
-int lsh_launch(t_data *data)
+int lsh_launch(t_data *data, t_pipe *pipe)
 {
-	char *ptr = "ls";
+	// char *ptr = "pwd";
 	char **args;
-	args = ft_split(ptr, ' ');
-	int i = 0;
-	while(args[i])
-	{
-		// printf("hello%d, %s\n", i, args[i]);
-		i++;
-	}
-	if(execve(access_path(data), args, data->env)== -1)
+    args = pipe->argv;
+	// args = ft_split(ptr, ' ');
+	// while(args[i])
+	// {
+	// int i = 0;
+	// 	printf("hello%d, %s\n", i, args[i]);
+	// 	i++;
+	// }
+    dup2(data->fd_herdoc, 0);
+   // printf("ok\n");
+    printf("%s --- %s\n", access_path(data, args), args[0]);
+	if(execve(access_path(data, args), args, data->env) == -1)
 		perror("Could not execve");
 	return (1);
 }

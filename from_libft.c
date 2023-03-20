@@ -40,13 +40,13 @@ t_pipe	*ft_lstnew(void *content, t_env *env)
 {
 	t_pipe	*new_node;
 
-	new_node = (t_pipe *)malloc(sizeof(*new_node));
+	new_node = (t_pipe *)malloc(sizeof(t_pipe));
 	if (!new_node)
 		return (NULL);
 	new_node->content = content;
 	new_node->argv = NULL;
 	new_node->red = NULL;
-	// new_node->head_env = env;
-	new_node-> next = NULL;
+	new_node->head_env = env;
+	new_node -> next = NULL;
 	return (new_node);
 }

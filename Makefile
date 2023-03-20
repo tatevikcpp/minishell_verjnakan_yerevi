@@ -1,12 +1,8 @@
-RED="\033[1;31m"
-GREEN='\033[3;32m'
-NONE='\033[0m'
-
 NAME = minishell
 
 CC = cc
 
-CFLAGS = -fsanitize=address -I./readline_sona/include  -g #-Wall -Werror -Wextra  -g
+CFLAGS =  -I./readline_sona/include -ggdb3   -g -fsanitize=address #-Wall -Werror -Wextra
 
 SRCS = $(wildcard *.c) 
 
@@ -20,6 +16,8 @@ LINKERLIB = ./libft/libft.a
 
 LIBFT = ./libft
 
+HEADER = $(wildcard *.h) 
+
 RM = rm -f
 
 RD =  $(shell find ${HOME} -name readline_sona 2>/dev/null)
@@ -27,27 +25,26 @@ RD =  $(shell find ${HOME} -name readline_sona 2>/dev/null)
 LINKERS	= -lreadline
 
 
-%.o: %.c
+%.o: %.c  ${HEADER}
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # all: readline $(NAME) 
 all: $(NAME) 
 	
-$(NAME): $(OBJS)
-	@$(MAKE) -C $(LIBFT)
-	@cp $(LINKERLIB) $(NAME)
-	@ar -rcs $(NAME) $(OBJS)
-	@$(CC) $(CFLAGS) $(LINKERS) $(INCLUDES) $(NAME) -o $(NAME)
-	@echo $(NONE) $(GREEN)"       >Compiled< $(NAME)" $(NONE)
+$(NAME): $(OBJS) $(LINKERLIB) 
+	$(CC) $(CFLAGS) $(LINKERS) $(LINKERLIB) $(INCLUDES) $(OBJS) -o $(NAME)
+
+$(LINKERLIB) :
+	$(MAKE) -C $(LIBFT)
 
 clean:
-	@$(MAKE) clean -C $(LIBFT)
-	@$(RM) $(OBJS)
+	$(MAKE) clean -C $(LIBFT)
+	$(RM) $(OBJS)
 
 fclean: clean
-	@$(MAKE) fclean -C $(LIBFT)
-	@$(RM) $(NAME)
-	@echo $(NONE) $(RED)"       >Removed< $(NAME)" $(NONE)
+	$(MAKE) fclean -C $(LIBFT)
+	$(RM) $(NAME)
+	echo $(NONE) $(RED)"       >Removed< $(NAME)" $(NONE)
 
 re: fclean all
 

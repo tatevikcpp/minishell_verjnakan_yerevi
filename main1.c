@@ -1,92 +1,121 @@
 #include "minishell.h"
-#include <fcntl.h>
-#include <unistd.h>
-t_redirect	*redirect_test(t_pipe *pipe) ;
 
-/* void init_argv_test(t_data *data)
+
+void printf_pipe(t_pipe *pipe)
 {
-	char **argv;
+	t_pipe *pipe_in;
 
-	argv = calloc(2, sizeof(char *));
-	argv[0] = "ls";
-	ft_t_pipe_add_back(&data->pipe, new_t_pipe(argv));
-	argv = calloc(2, sizeof(char *));
-	argv[0] = "cat";
-	ft_t_pipe_add_back(&data->pipe, new_t_pipe(argv));
-	argv = calloc(2, sizeof(char *));
-	argv[0] = "cat";
-	ft_t_pipe_add_back(&data->pipe, new_t_pipe(argv));
-} */
-void pipe_in_out(int i,t_data *data,int count)
-{
-	if (i == 0)
+	pipe_in = pipe;
+	while (pipe_in)
 	{
-		close(data->pipe->fd[i][0]);
-		dup2(data->pipe->fd[i][1], STDOUT_FILENO);
-		close(data->pipe->fd[i][1]);
-	}
-	else if (i > 0 && i < count)
-	{
-		close(data->pipe->fd[i - 1][0]);
-		dup2(data->pipe->fd[i - 1][1], STDIN_FILENO);
-		close(data->pipe->fd[i - 1][1]);
-		close(data->pipe->fd[i][0]);
-		dup2(data->pipe->fd[i][1], STDOUT_FILENO);
-		close(data->pipe->fd[i][1]);
-	}				
-	else
-	{
-		close(data->pipe->fd[i - 1][1]);
-		dup2(data->pipe->fd[i - 1][0], STDIN_FILENO);
-		close(data->pipe->fd[i - 1][0]);
-	}
-	lsh_launch(data);
-	exit(0);
-}
-
-void pipe_exec(t_data *data)
-{
-	int		i;
-	int		count;
-
-	i = 0;
-	count = data->pipe_count;
-		while (i <= count)
+		int i = 0;
+		print_list(pipe->red);
+		while (pipe->argv[i])
 		{
-			data->pipe->fd[i] = malloc(sizeof(int) * 2);
-			if(pipe(data->pipe->fd[i]) == -1)
-			{
-				printf("error\n");
-				return ;
-			}
-			pid_t id = fork();
-			if (id == -1)
-				perror("Error: fork\n");
-			if (id == 0)
-				pipe_in_out(i,data,count);				
+			printf("argv = %s\n", pipe_in->argv[i]);
 			i++;
 		}
-		i = 0;
-		while (i != -1)
-			i = waitpid(-1, NULL, 0);
+		pipe_in = pipe_in->next;
+	}
 }
 
-int main(int ac,  char **av,  char **env)
+int ther_is_buildin(t_data data,char *ptr)
 {
-	(void)(av + ac);
-	char 	*ptr;
-	t_data	data;
-		
-	struct_zeroed(&data, env);
-	
-	while (1)
+	int i;
+	i = 0;
+
+	char *build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
+	while (build_in[i])
 	{
-		ptr = readline("minishell-$ ");
-		split_string(ptr, &data);		
-		if (*ptr)
-			add_history(ptr);
-		split_readline(ptr, data.pipe, &data);
-		// pipe_exec(&data);		
+		if (data.pipe->argv[0] == build_in[i])
+			return (1);
+		i++;
 	}
 	return (0);
 }
+
+
+int main(int ac,  char **av,  char **env)
+{
+	(void)(av+ac);
+	int i;
+	t_data	data;
+	char *ptr = NULL;
+	i = 0;
+	while (1)
+	{
+		struct_zeroed(&data, env);
+		// print_list_head_env(&data);
+		ptr = readline("minishell-$ ");
+		if (ptr == NULL)
+			exit(1);
+		// if (*ptr == '\0')
+		// 	continue ;
+		add_history(ptr);
+		// if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
+		// 	continue ;
+		// if (syntax_error(ptr, &i) == 1)
+		// 	continue ;
+		// if (metachar_error(ptr) == 1)
+		// 	continue ;							// kara chlini
+		// check_qoutes(ptr); // sxala ashxatum
+
+		// check_quot_double(ptr);
+		// check_quot_one(ptr);
+		// print_list_head_env(&data);
+
+
+		split_string(ptr, &data); // ls|ls | "|ls|"  sxala ashxatum
+		// print_lists(data.pipe);
+
+		t_pipe *tmp1 = data.pipe;
+		while (tmp1)//pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
+		{
+			tmp1->red = redirect_test(tmp1); // sxal ls>a>b
+			split_s__to_argv(/* &data,  */tmp1);
+			tmp1 = tmp1->next;
+		}
+		printf_pipe(data.pipe);
+		printf("pipe count: %d\n", data.pipe_count);
+		if (data.pipe_count > 1)
+		{
+			pipe_exec(&data);
+		}
+		else if(data.pipe_count == 1)
+		{
+			if (ther_is_buildin(data, ptr) == 0)
+				split_readline(ptr, data.pipe, &data);
+			else
+			{
+				pipe_exec(&data);
+			}		
+		}
+
+//------------------------------------------- Sona
+		
+		// heredoc(ptr,&data);
+		// append_red();
+		// choose_redirect(&data,ptr);
+		// pipe_exec(&data);
+		// append_redir(ptr);
+//------------------------------------------- Sona	
+
+
+		// print_list_head_env(data.head_env);	
+		// print_env(&data);
+		// print_list(data.pipe);
+		//////**************************
+		// hendl_dolar(&data, ptr);
+		// printf("comand : %s\n", hendl_doloar_comand(&data, ptr));
+		///////////////************************
+
+		// send_env(&data);
+		 	
+		// 	data.pipe
+		// exit(1);
+		// printf("ok\n");
+	}
+    	// t_pipe *head = get_pipe_readline(&data, ptr);
+	return (0);
+}
+
