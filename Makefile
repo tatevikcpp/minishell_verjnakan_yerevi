@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS =  -I./readline_sona/include -ggdb3   -g -fsanitize=address #-Wall -Werror -Wextra
 
-SRCS = $(wildcard ./src*.c) 
+SRCS = $(wildcard ./src/*.c) 
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 

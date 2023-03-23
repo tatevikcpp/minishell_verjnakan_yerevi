@@ -2,7 +2,7 @@
 
 void printf_pipe(t_pipe *pipe);
 
-
+// $ls|"$ls   "
 int parsing(t_data *data, char *ptr) 
 {
 // if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
@@ -19,13 +19,12 @@ int parsing(t_data *data, char *ptr)
 
 
     split_string(ptr, data); // ls|ls | "|ls|"  sxala ashxatum
-    print_lists(data->pipe);
-
+    // print_lists(data->pipe);
     t_pipe *tmp1 = data->pipe;
-    while (tmp1)//pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
+    while (tmp1) //pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
     {
         tmp1->red = redirect_test(tmp1); // sxal ls>a>b
-        split_s__to_argv(/* &data,  */tmp1);
+        split_s__to_argv(/* &data,  */tmp1); // *(42) => 1
         tmp1 = tmp1->next;
     }
     printf_pipe(data->pipe);

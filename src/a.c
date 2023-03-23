@@ -25,9 +25,9 @@ void heredoc(char *ptr,t_data *data)
 void append_red()
 {
   /*   if (ft_strcmp("ls") == 0) */
-  printf("A\n");
-            open("file.txt", O_CREAT | O_RDWR | O_APPEND, 0644); 
-    printf("B\n");
+//   printf("A\n");
+            // open("file.txt", O_CREAT | O_RDWR | O_APPEND, 0644); 
+    // printf("B\n");
         
        
     

@@ -9,7 +9,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <sys/stat.h> 
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # define HEREDOC 5
@@ -19,9 +19,9 @@
 
 typedef struct s_redirect
 {
-	// int	flag;  // O_APPEND || O_TRUNC || O_RDONLY || HEREDOC
+	int	flag;  // O_APPEND || O_TRUNC || O_RDONLY || HEREDOC
 	char *f_name;
-	char *flag;
+	char *flag_tmp;
 	struct s_redirect *next;
 } t_redirect;
 
@@ -32,18 +32,15 @@ typedef struct s_env
 	struct s_env	*next;
 }t_env;
 
-
-
 typedef struct s_pipe
 {
 	char			*s;
-	char			*content;
+	char			*content; // free
 	int				fd_in;  // 0
 	int				fd_out; // 1
-	char			**argv; // null
+	char			**argv; // null // free
 	t_redirect		*red; // null
 	t_env			*head_env;  // data->env;
-	char			**env;  // env;
 	struct s_pipe	*next;  // null
 }	t_pipe;
 
@@ -53,12 +50,12 @@ typedef struct s_data
 {
 	int		(*fd)[2]; // read-0 write-1
 	t_env	*head_env;
-	char	**env;
-	char	**splited_pipe;
-	t_pipe *pipe;
+	char	**env; // update env after export and unset
+	// char	**splited_pipe;
+	t_pipe 	*pipe;
 	int		pipe_count;
 	int 	fd_herdoc; // sxal anun
-} t_data;
+}	t_data;
 
 
 //***********************Tatev
@@ -106,7 +103,7 @@ void 		print_list(t_redirect *red);
 char			*split_quote(char *top, int *i, char c);
 void			ft_t_redirect_add_back(t_redirect **lst, t_redirect *new);
 t_redirect		*ft_t_redirect_last(t_redirect *lst);
-t_redirect 		*new_t_redirect(char *f_name, char *flag);
+// t_redirect 		*new_t_redirect(char *f_name, char *flag);
 
 int		redirect_f_name_flag(t_pipe *top,t_redirect **head, int *i);
 int		redirect_to_command(t_pipe *top, int *i) ;
@@ -168,7 +165,7 @@ void choose_redirect(t_data *data, char *ptr);
 
 t_redirect		*ft_t_redirect_last(t_redirect *lst);
 void		ft_t_redirect_add_back(t_redirect **lst, t_redirect *new);
-t_redirect 	*new_t_redirect(char *f_name, char *flag);
+t_redirect *new_t_redirect(char *f_name, char *flag_tmp, int flag);
 
 // void	redirect_f_name_flag(t_pipe *top,t_redirect **head, int *i);
 // void	redirect_to_command(t_pipe *top, int *i) ;

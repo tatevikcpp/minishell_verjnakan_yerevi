@@ -26,7 +26,7 @@ void print_list(t_redirect *red)
 	while (head)
 	{
 		printf("f_name: [%s]\n", head->f_name);
-		printf("flag: [%s]\n", head->flag);
+		// printf("flag: [%s]\n", head->flag);
 		head = head->next;
 	}
 }
@@ -60,7 +60,7 @@ void send_env(t_data *data)
 		str1 = ft_strjoin(str1,str);
 		head = head->next;
 	}
-	printf("str1 = %s\n", str1);
+	// printf("str1 = %s\n", str1);
 	data->env = ft_split(str1, ' ');
 }
 
