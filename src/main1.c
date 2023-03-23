@@ -9,8 +9,8 @@ void printf_pipe(t_pipe *pipe)
 	while (pipe_in)
 	{
 		int i = 0;
-		print_list(pipe->red);
-		while (pipe->argv[i])
+		print_list(pipe_in->red);
+		while (pipe_in->argv && pipe_in->argv[i])
 		{
 			printf("argv = %s\n", pipe_in->argv[i]);
 			i++;
@@ -19,7 +19,7 @@ void printf_pipe(t_pipe *pipe)
 	}
 }
 
-int ther_is_buildin(t_data data,char *ptr)
+int ther_is_buildin(t_data *data,char *ptr)
 {
 	int i;
 	i = 0;
@@ -27,7 +27,7 @@ int ther_is_buildin(t_data data,char *ptr)
 	char *build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
 	while (build_in[i])
 	{
-		if (data.pipe->argv[0] == build_in[i])
+		if (data->pipe->argv[0] == build_in[i])
 			return (1);
 		i++;
 	}
@@ -44,7 +44,7 @@ int main(int ac,  char **av,  char **env)
 	i = 0;
 	while (1)
 	{
-		struct_zeroed(&data, env);
+		struct_zeroed(&data, env); // jamanakavor
 		// print_list_head_env(&data);
 		ptr = readline("minishell-$ ");
 		if (ptr == NULL)
@@ -52,44 +52,9 @@ int main(int ac,  char **av,  char **env)
 		// if (*ptr == '\0')
 		// 	continue ;
 		add_history(ptr);
-		// if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
-		// 	continue ;
-		// if (syntax_error(ptr, &i) == 1)
-		// 	continue ;
-		// if (metachar_error(ptr) == 1)
-		// 	continue ;							// kara chlini
-		// check_qoutes(ptr); // sxala ashxatum
-
-		// check_quot_double(ptr);
-		// check_quot_one(ptr);
-		// print_list_head_env(&data);
-
-
-		split_string(ptr, &data); // ls|ls | "|ls|"  sxala ashxatum
-		// print_lists(data.pipe);
-
-		t_pipe *tmp1 = data.pipe;
-		while (tmp1)//pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
-		{
-			tmp1->red = redirect_test(tmp1); // sxal ls>a>b
-			split_s__to_argv(/* &data,  */tmp1);
-			tmp1 = tmp1->next;
-		}
-		printf_pipe(data.pipe);
-		printf("pipe count: %d\n", data.pipe_count);
-		if (data.pipe_count > 1)
-		{
-			pipe_exec(&data);
-		}
-		else if(data.pipe_count == 1)
-		{
-			if (ther_is_buildin(data, ptr) == 0)
-				split_readline(ptr, data.pipe, &data);
-			else
-			{
-				pipe_exec(&data);
-			}		
-		}
+		parsing(&data, ptr);
+		// execute(&data, ptr);
+		
 
 //------------------------------------------- Sona
 		

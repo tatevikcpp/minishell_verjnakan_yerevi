@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS =  -I./readline_sona/include -ggdb3   -g -fsanitize=address #-Wall -Werror -Wextra
 
-SRCS = $(wildcard *.c) 
+SRCS = $(wildcard ./src*.c) 
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
@@ -12,9 +12,13 @@ INCLUDES = -Ilibft  -I./include
 
 LINKERS	= -L./libft  -L./readline_sona/lib -lreadline
 
-LINKERLIB = ./libft/libft.a
+LINKERLIBFT = ./libft/libft.a
 
 LIBFT = ./libft
+
+LINKERLIBFTPRINTF = ./ft_printf/libftprintf.a
+
+FTPRINTF = ./ft_printf
 
 HEADER = $(wildcard *.h) 
 
@@ -31,18 +35,23 @@ LINKERS	= -lreadline
 # all: readline $(NAME) 
 all: $(NAME) 
 	
-$(NAME): $(OBJS) $(LINKERLIB) 
-	$(CC) $(CFLAGS) $(LINKERS) $(LINKERLIB) $(INCLUDES) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS) $(LINKERLIBFT) $(LINKERLIBFTPRINTF)
+	$(CC) $(CFLAGS) $(LINKERS) $(LINKERLIBFT) $(LINKERLIBFTPRINTF) $(INCLUDES) $(OBJS) -o $(NAME)
 
-$(LINKERLIB) :
+$(LINKERLIBFTPRINTF) :
+	$(MAKE) -C $(FTPRINTF)
+
+$(LINKERLIBFT) :
 	$(MAKE) -C $(LIBFT)
 
 clean:
 	$(MAKE) clean -C $(LIBFT)
+	$(MAKE) clean -C $(FTPRINTF)
 	$(RM) $(OBJS)
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT)
+	$(MAKE) fclean -C $(FTPRINTF)
 	$(RM) $(NAME)
 	echo $(NONE) $(RED)"       >Removed< $(NAME)" $(NONE)
 

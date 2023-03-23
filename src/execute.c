@@ -45,3 +45,21 @@ int lsh_launch(t_data *data, t_pipe *pipe)
 		perror("Could not execve");
 	return (1);
 }
+
+
+void execute(t_data *data, char *ptr)
+{
+    if (data->pipe_count > 1)
+    {
+    	pipe_exec(data);
+    }
+    else if(data->pipe_count == 1)
+    {
+    	if (ther_is_buildin(data, ptr) == 0)
+    		split_readline(ptr, data->pipe, data);
+    	else
+    	{
+    		pipe_exec(data);
+    	}		
+    }
+}

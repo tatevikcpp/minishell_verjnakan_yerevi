@@ -21,7 +21,7 @@ typedef struct s_redirect
 {
 	// int	flag;  // O_APPEND || O_TRUNC || O_RDONLY || HEREDOC
 	char *f_name;
-	char *flag;	
+	char *flag;
 	struct s_redirect *next;
 } t_redirect;
 
@@ -57,7 +57,7 @@ typedef struct s_data
 	char	**splited_pipe;
 	t_pipe *pipe;
 	int		pipe_count;
-	int 	fd_herdoc;
+	int 	fd_herdoc; // sxal anun
 } t_data;
 
 
@@ -191,7 +191,12 @@ void	ft_t_env_add_back(t_env **lst, t_env *new);
 //--------------------------------------------
 void pipe_exec(t_data *data);
 int lsh_launch(t_data *data, t_pipe *pipe);
-int ther_is_buildin(t_data data, char *ptr);
+int ther_is_buildin(t_data *data, char *ptr);
 t_redirect	*redirect_test(t_pipe *pipe);
+
+
+//
+int parsing(t_data *data, char *ptr);
+void execute(t_data *data, char *ptr);
 
 #endif
