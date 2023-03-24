@@ -21,7 +21,7 @@ typedef struct s_redirect
 {
 	int	flag;  // O_APPEND || O_TRUNC || O_RDONLY || HEREDOC
 	char *f_name;
-	char *flag_tmp;
+	int	heredoc_fd;
 	struct s_redirect *next;
 } t_redirect;
 
@@ -30,14 +30,14 @@ typedef struct s_env
 	char 			*key;
 	char 			*val;
 	struct s_env	*next;
-}t_env;
+}	t_env;
 
 typedef struct s_pipe
 {
 	char			*s;
 	char			*content; // free
 	int				fd_in;  // 0
-	int				fd_out; // 1
+	int				fd_out; // 1 
 	char			**argv; // null // free
 	t_redirect		*red; // null
 	t_env			*head_env;  // data->env;
@@ -55,6 +55,9 @@ typedef struct s_data
 	t_pipe 	*pipe;
 	int		pipe_count;
 	int 	fd_herdoc; // sxal anun
+	///********
+	int len_key_sum;
+	int len_val_sum;
 }	t_data;
 
 
@@ -114,10 +117,10 @@ void	ft_t_pipe_add_back(t_pipe **lst, t_pipe *new);
 t_pipe *new_t_pipe(char **tmp);
 t_pipe	*ft_t_pipe_last(t_pipe *lst);
 
-char *hendl_dolar(t_pipe *data, char *str, int *i);
-char *hendl_doloar_comand(t_pipe *data, char *test, int *i);
-char 		*get_dolar_val(t_pipe *data, char *str1);
-void	split_s__to_argv(/* t_data *data,  */t_pipe *pipe);
+// char *hendl_dolar(t_pipe *data, char *str, int *i);
+// char *hendl_doloar_comand(t_pipe *data, char *test, int *i);
+// char 		*get_dolar_val(t_pipe *data, char *str1);
+void	split_s__to_argv(t_data *data,  t_pipe *pipe);
 
 //lkejfnlwjflka
 
@@ -130,9 +133,9 @@ int check_qoutes(char *str);
 
 ///sevagrutyun
 
-/* char *hendl_doloar_comand(t_data *data, char *test);
+char *hendl_doloar_comand(t_data *data, char *test);
 void hendl_dolar(t_data *data, char *str);
-char *get_dolar_val(t_data *data, char *str1); */
+char *get_dolar_val(t_data *data, char *str1);
 
 void print_list_head_env_pipe(t_pipe *pipe);
 
@@ -165,7 +168,7 @@ void choose_redirect(t_data *data, char *ptr);
 
 t_redirect		*ft_t_redirect_last(t_redirect *lst);
 void		ft_t_redirect_add_back(t_redirect **lst, t_redirect *new);
-t_redirect *new_t_redirect(char *f_name, char *flag_tmp, int flag);
+t_redirect *new_t_redirect(char *f_name, int flag);
 
 // void	redirect_f_name_flag(t_pipe *top,t_redirect **head, int *i);
 // void	redirect_to_command(t_pipe *top, int *i) ;
@@ -194,6 +197,11 @@ t_redirect	*redirect_test(t_pipe *pipe);
 
 //
 int parsing(t_data *data, char *ptr);
+int	redirect_to_command(t_pipe *top, int *i);
+char	*ft_strjoin_ft(char const *s1, char c);
+char *function(t_data *data, char *test);
+
+//
 void execute(t_data *data, char *ptr);
 
 #endif

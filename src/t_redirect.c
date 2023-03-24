@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-t_redirect *new_t_redirect(char *f_name, char *flag_tmp, int flag)
+t_redirect *new_t_redirect(char *f_name, int flag)
 {
    t_redirect *new_node;
 
     new_node = malloc(sizeof(t_redirect));
     new_node->f_name = f_name;
+    new_node->heredoc_fd = -1;
     new_node->flag = flag;
-    new_node->flag_tmp = flag_tmp;
     new_node->next = NULL;
     return (new_node);
 }

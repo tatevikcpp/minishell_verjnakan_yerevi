@@ -20,7 +20,7 @@ LINKERLIBFTPRINTF = ./ft_printf/libftprintf.a
 
 FTPRINTF = ./ft_printf
 
-HEADER = $(wildcard *.h) 
+HEADER = $(wildcard /src/*.h) 
 
 RM = rm -f
 
@@ -29,8 +29,8 @@ RD =  $(shell find ${HOME} -name readline_sona 2>/dev/null)
 LINKERS	= -lreadline
 
 
-%.o: %.c  ${HEADER}
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+%.o: %.c  ${HEADER} Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # all: readline $(NAME) 
 all: $(NAME) 

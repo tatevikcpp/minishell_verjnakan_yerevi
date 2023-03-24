@@ -1,17 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/23 13:41:38 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/23 14:01:18 by tkhechoy         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   pipe.c                                             :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2023/03/23 13:41:38 by tkhechoy          #+#    #+#             */
+// /*   Updated: 2023/03/24 19:28:06 by tkhechoy         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "minishell.h"
-//  |$ls|"$ls   "|a
+// //  |$ls|"$ls   "|a
 
 void split_string(char *input, t_data *data)
 {
@@ -48,14 +48,14 @@ void split_string(char *input, t_data *data)
 }
 
 
-void print_lists(t_pipe *red)
-{
-	t_pipe *head;
+// void print_lists(t_pipe *red)
+// {
+// 	t_pipe *head;
 
-	head = red;
-	while (head)
-	{
-		printf("content: %s\n", head->content);
-		head = head->next;
-	}
-}
+// 	head = red;
+// 	while (head)
+// 	{
+// 		printf("content: %s\n", head->content);
+// 		head = head->next;
+// 	}
+// }

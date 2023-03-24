@@ -8,10 +8,10 @@
 
 char *split_quote(char *top, int *i, char c)
 {
-	int first = 0;
-	char * str = malloc(sizeof(char));
+	int	first;
 
 	first = *i;
+	char * str = malloc(sizeof(char));
 	while (top[*i] != c)
 		(*i)++;
 	str =  ft_substr(top, first, *i - first);		
@@ -22,13 +22,24 @@ void print_list(t_redirect *red)
 {
 	t_redirect *head;
 
+	printf("redirections ***********************************\n");
 	head = red;
 	while (head)
 	{
-		printf("f_name: [%s]\n", head->f_name);
-		// printf("flag: [%s]\n", head->flag);
+		printf("f_name: [%s]", head->f_name);
+		printf("  Mode = ");
+		if (head->flag == HEREDOC)
+			printf("HEREDOC\n");
+		if (head->flag == O_APPEND)
+			printf("O_APPEND\n");
+		if (head->flag == O_RDONLY)
+			printf("O_RDONLY\n");
+		if (head->flag == O_TRUNC)
+			printf("O_TRUNC\n");
+		
 		head = head->next;
 	}
+	printf("redirections ***********************************\n");
 }
 
 void print_list_head_env(t_data *data)
