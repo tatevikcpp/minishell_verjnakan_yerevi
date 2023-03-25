@@ -44,8 +44,10 @@ char *get_dolar_val(t_data *data, char *str1)
 {
     t_env *head;
     char *str;
+    int flag;
     head = data->head_env;
 
+    flag = 0;
     str = NULL;
     while (head)    
     {
@@ -53,9 +55,16 @@ char *get_dolar_val(t_data *data, char *str1)
         {
             str = head->val;
             data->len_val_sum += ft_strlen(str);
+            flag = 1;
         }
         head = head->next;
     }
+    if (flag == 0)
+    {
+        str = str1;
+        data->len_val_sum += ft_strlen(str1);
+    }
+
     return (str);
 }
 
@@ -127,6 +136,11 @@ char *hendl_doloar_comand(t_data *data, char *test)
         if (test[j] && !(test[j] == '\'' && is_in_single) && !(test[j] == '"' && is_in_double))// else?
             j++;
 	}
+    if (is_in_single || is_in_double)
+    {
+        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", '"');// '\'', uxxel, huysy dnel kisvelu vtra
+        return ((char *)0);
+    }
     return (str_line);
 }
 

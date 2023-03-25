@@ -10,6 +10,7 @@
 # include <fcntl.h>
 # include <sys/stat.h> 
 # include "../libft/libft.h"
+# include "../ft_printf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # define HEREDOC 5

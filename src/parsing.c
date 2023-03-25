@@ -40,13 +40,39 @@ int open_files_for_redirect (t_pipe *pipe)
     return (0);
 }
 
+
+int syntax_errors(char *ptr)
+{
+    int i;
+
+    i = 0;
+    while (ptr[i])
+    {
+        if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
+           return (1); //continue
+        if (syntax_error(ptr, &i) == 1)
+           return (1); //continue
+        if (metachar_error(ptr) == 1)
+           return (1);	//continue  // kara chlini
+        // check_qoutes(ptr); // sxala ashxatum
+        // check_quot_double(ptr);
+        // check_quot_one(ptr);
+        if (ptr[i])
+            i++;
+    }
+    return (0);
+}
+
 // $ls|"$ls   "
 //  asfas >>   out
-
-
 int parsing(t_data *data, char *ptr) 
 {
-// if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
+    if (syntax_errors(ptr)) 
+    // >> >> >> >> (>>) 
+    // >echo>, <echo<, >>echo>>, <<echo<< (newline)
+    // cat < ls, cat < ls > ls
+        return (-1);
+    // if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
     // 	continue ;
     // if (syntax_error(ptr, &i) == 1)
     // 	continue ;
@@ -56,9 +82,7 @@ int parsing(t_data *data, char *ptr)
 
     // check_quot_double(ptr);
     // check_quot_one(ptr);
-    // print_list_head_env(&data);
-
-
+    // print_list_head_env(data);
     split_string(ptr, data); // ls|ls | "|ls|"  sxala ashxatum
     // print_lists(data->pipe);
     t_pipe *tmp1 = data->pipe;

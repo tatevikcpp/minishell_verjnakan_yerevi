@@ -48,9 +48,9 @@ int main(int ac,  char **av,  char **env)
 	t_data	data;
 	char *ptr = NULL;
 	i = 0;
+	struct_zeroed(&data, env); // jamanakavor
 	while (1)
 	{
-		struct_zeroed(&data, env); // jamanakavor
 		// print_list_head_env(&data);
 		ptr = readline("minishell-$ ");
 		if (ptr == NULL)
