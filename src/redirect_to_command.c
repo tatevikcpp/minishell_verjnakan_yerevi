@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 20:44:36 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/23 20:49:56 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/03/26 20:01:33 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	redirect_to_command(t_pipe *top, int *i)
 		*i = for_space(top->content, '"', *i);
 		if (top->content[*i]  && !ft_strchr(METACHARACTER, top->content[*i]))
 			(*i)++;
-		// printf("cont : %s\n", top->content + *i);
 	}
 	tmp_comand = ft_substr(top->content, k, *i - k + 1);
 	// if (tmp_comand[0] != '$')
-		top->s = ft_strjoin(top->s, ft_strtrim(tmp_comand, METACHARACTER));
+	// printf("top->s before: %s\n", top->s);
+	top->s = ft_strjoin(top->s, ft_strtrim(tmp_comand, METACHARACTER));
 	top->s = ft_strjoin_ft(top->s, 42);
 	// printf("top->s: %s\n", top->s);
 	// if (top->content[*i])

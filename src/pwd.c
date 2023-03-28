@@ -10,4 +10,8 @@ int    ft_pwd(void)
     else
       printf("%s\n", cwd);
    return (0); 
+
+
+printf("hi");
+
 }

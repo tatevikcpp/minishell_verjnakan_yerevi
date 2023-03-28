@@ -1,11 +1,10 @@
 #include "minishell.h"
 
-int ft_cd(char *str, t_data *data)
+int ft_cd(char **argv, t_data *data)
 {
-	
-    if (str == NULL)
-        // our env
+    if (argv[1] == NULL)
         chdir(ft_get_value("HOME", data));
-    chdir(str);
+    else
+        chdir(argv[1]);
     return (0);
 }

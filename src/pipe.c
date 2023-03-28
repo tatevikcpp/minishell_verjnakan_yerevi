@@ -22,6 +22,7 @@ void split_string(char *input, t_data *data)
 
 	i = 0;
 	k = 0;
+	data->pipe_count = 1;
 	while (input[i])
 	{
 		flag_for_null = 0;
@@ -40,7 +41,10 @@ void split_string(char *input, t_data *data)
 			ft_lstadd_back(&data->pipe, node);
 			k = i + 1;
 			if (flag_for_null == 1)
+			{
+				data->pipe_count++;
 				i++;
+			}
 		}
 		if (flag_for_null != 1 && input[i] && ft_strchr("'\"", input[i]) == 0)
 			i++;
