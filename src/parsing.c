@@ -32,46 +32,39 @@ int open_files_for_redirect (t_pipe *pipe)
             }
         }
         else if (head_red->flag == HEREDOC)
-        {
             pipe->fd_in = head_red->heredoc_fd;
-        }
         head_red = head_red->next;
     }
     return (0);
 }
 
-
-int syntax_errors(char *ptr)
+int check_errors(char *ptr)
 {
     int i;
 
     i = 0;
     while (ptr[i])
     {
-        if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
-           return (1); //continue
-        if (syntax_error(ptr, &i) == 1)
-           return (1); //continue
-        if (metachar_error(ptr) == 1)
-           return (1);	//continue  // kara chlini
+        if (pipe_error(ptr) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
+          { printf("yg\n"); return (0); }//continue
         // check_qoutes(ptr); // sxala ashxatum
         // check_quot_double(ptr);
         // check_quot_one(ptr);
         if (ptr[i])
             i++;
     }
-    return (0);
+    return (1);
 }
 
 // $ls|"$ls   "
 //  asfas >>   out
 int parsing(t_data *data, char *ptr) 
 {
-    if (syntax_errors(ptr)) 
-    // >> >> >> >> (>>) 
-    // >echo>, <echo<, >>echo>>, <<echo<< (newline)
-    // cat < ls, cat < ls > ls
-        return (-1);
+    // if (check_errors(ptr)) 
+    // // >> >> >> >> (>>) 
+    // // >echo>, <echo<, >>echo>>, <<echo<< (newline)
+    // // cat < ls, cat < ls > ls
+        // return (EXIT_FAILURE);
     // if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
     // 	continue ;
     // if (syntax_error(ptr, &i) == 1)

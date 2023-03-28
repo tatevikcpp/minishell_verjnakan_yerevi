@@ -138,7 +138,7 @@ char *hendl_doloar_comand(t_data *data, char *test)
 	}
     if (is_in_single || is_in_double)
     {
-        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", '"');// '\'', uxxel, huysy dnel kisvelu vtra
+        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", '"');// '\'', UXXEL, huysy dnel kisvelu vtra
         return ((char *)0);
     }
     return (str_line);

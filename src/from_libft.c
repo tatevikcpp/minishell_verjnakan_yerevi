@@ -29,9 +29,9 @@ t_pipe	*ft_lstlast(t_pipe *lst)
 		return (0);
 	while (lst)
 	{
-		if (!lst -> next)
+		if (!lst->next)
 			return (lst);
-		lst = lst -> next;
+		lst = lst->next;
 	}
 	return (lst);
 }
