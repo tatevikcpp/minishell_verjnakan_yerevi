@@ -84,6 +84,7 @@ void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red)
 
 void pipe_exec(t_data *data, t_redirect *red)
 {
+	// barev
 	int		i;
 	int		count;
 	t_pipe *tmp;
