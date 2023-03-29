@@ -26,9 +26,15 @@ int main(int ac,  char **av,  char **env)
 	ptr = NULL;
 	i = 0;
 	(void)(av + ac);
+	// while (i < 10)
+	// {
+	// 	ptr = malloc(1);
+	// }
+	
 	struct_zeroed(&data, env); // jamanakavor
 	while (1)
 	{
+
 		// print_list_head_env(&data);
 		ptr = readline("minishell-$ ");
 		if (ptr == NULL)
@@ -43,27 +49,29 @@ int main(int ac,  char **av,  char **env)
 		if (parsing(&data, ptr) != 0)
 			continue ;
 		// execute(&data, ptr);
-		if (data.pipe_count > 1)
-		{
-			// heredoc(data.pipe->red);
-			pipe_exec(&data, data.pipe->red);
-		}
-		if (data.pipe_count == 1)
-		{
-			if (there_is_builtin(&data) == 1)
-			{
-				printf("welcome to built-ins\n");
-				choose_builtin(/* ptr, */ data.pipe, &data);
-			}
-			else
-			{
-				// heredoc(data.pipe->red, data.pipe);
-				// infile(data.pipe->red, data.pipe);
-				// outfile(data.pipe->red, data.pipe);
-				// append_red(data.pipe->red, data.pipe);
-				pipe_exec(&data, data.pipe->red);
-			}			
-		}
+		// if (data.pipe_count > 1)
+		// {
+		// 	// heredoc(data.pipe->red);
+		// 	pipe_exec(&data, data.pipe->red);
+		// }
+		// if (data.pipe_count == 1)
+		// {
+		// 	if (there_is_builtin(&data) == 1)
+		// 	{
+		// 		printf("welcome to built-ins\n");
+		// 		choose_builtin(/* ptr, */ data.pipe, &data);
+		// 	}
+		// 	else
+		// 	{
+		// 		// heredoc(data.pipe->red, data.pipe);
+		// 		// infile(data.pipe->red, data.pipe);
+		// 		// outfile(data.pipe->red, data.pipe);
+		// 		// append_red(data.pipe->red, data.pipe);
+		// 		pipe_exec(&data, data.pipe->red);
+		// 	}			
+		// }
+		free_data(&data);
+		free(ptr);
 // //------------------------------------------- Sona
 		
 // 		// heredoc(ptr,&data);
@@ -87,6 +95,7 @@ int main(int ac,  char **av,  char **env)
 // 		// 	data.pipe
 // 		// exit(1);
 // 		// printf("ok\n");
+
 	}
 // t_pipe *head = get_pipe_readline(&data, ptr);
 	return (0);

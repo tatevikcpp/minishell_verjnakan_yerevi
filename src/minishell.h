@@ -47,24 +47,24 @@ typedef struct s_pipe
 	char				**argv; // null
 	t_redirect			*red; // null
 	t_env				*head_env;  // data->env;
-	char				**env;  // env;
-	int					infile;
-	int					outfile;
-	int					append_f;
+	// char				**env;  // env;
+	// int					infile;
+	// int					outfile;
+	// int					append_f;
 	int					heredoc_f;
 	struct s_pipe		*next;  // null
 }	t_pipe;
 
 typedef struct s_data
 {
-	int					(*fd)[2]; // read-0 write-1
+	int					(*fd)[2]; // read-0 write-1  // NULL
 	t_env				*head_env;
 	char				**env;
-	char				**splited_pipe;
-	t_pipe				*pipe;
-	int					pipe_count;
-	int					len_key_sum;
-	int					len_val_sum;
+	// char				**splited_pipe;  // 
+	t_pipe				*pipe;        // NULL
+	int					pipe_count;   // 0
+	int					len_key_sum;  // 0
+	int					len_val_sum;  // 0
 }	t_data;
 /* ------------------ */
 
@@ -106,7 +106,7 @@ t_redirect	*new_t_redirect(char *f_name, int flag);
 /* ----------------------------------------------------- */
 
 /* ---------- initialize lists -------  */ /* init_stract.c */
-int 		init(t_data	*data, char **envp);
+int 		init_env(t_data	*data, char **envp);
 void		struct_zeroed(t_data *data, char **env);
 char 		*ft_get_value(char *key, t_data *ptr);
 /* -------------------------------------------------------- */
@@ -175,7 +175,7 @@ void		choose_redirect(t_pipe *pipe, t_redirect *red);
 /* ------------------------------ */
 
 /* ----------- syntax errors -------------- */
-int			syntax_error(char *ptr, int *i);
+int			syntax_error(char *ptr, int i);
 int			metachar_error(char *ptr);
 int			check_errors(char *ptr);
 int			pipe_error(char *ptr);
@@ -236,5 +236,8 @@ void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 /* ------------------------------ */
 /* ------------------------------------------------ */
 /* ----------------------------------------------------------------------------------------- */
+
+void	free_data(t_data *data);
+void	free_matrix(char **str);
 
 #endif

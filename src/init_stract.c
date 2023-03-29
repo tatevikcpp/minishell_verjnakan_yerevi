@@ -1,39 +1,44 @@
 #include "minishell.h"
 
-int init(t_data	*data, char **envp)
+int init_env(t_data	*data, char **envp)
 {
 	int		i;
 	t_env	*tmp_first_node;
 	char	**split_env;
 
 	i = 0;
-	(*data).head_env = (t_env *)malloc(sizeof(t_env));
-	if (!(*data).head_env)
+	tmp_first_node = (t_env *)malloc(sizeof(t_env));
+	if (!tmp_first_node)
 		return (0);
-	tmp_first_node = data->head_env;
+	data->head_env = tmp_first_node;
 	while (envp[i])
 	{
 		split_env = ft_split(envp[i], '=');
-		data->head_env->key = split_env[0];
-		data->head_env->val = split_env[1];
-		data->head_env->next = NULL;
+		tmp_first_node->key = split_env[0];
+		tmp_first_node->val = split_env[1];
+		tmp_first_node->next = NULL;
+		free_matrix(split_env);
 		if (!envp[i + 1])
 			break ;
-		data->head_env->next = (t_env *)malloc(sizeof(t_env));
-		if (!(*data).head_env)
+		tmp_first_node->next = (t_env *)malloc(sizeof(t_env));
+		if (!tmp_first_node->next)
 			return (0);
-		data->head_env = data->head_env->next;
+		tmp_first_node = tmp_first_node->next;
 		i++;
 	}
-	data->head_env = tmp_first_node;
 	return (0);
 }
 
 void	struct_zeroed(t_data *data, char **env)
 {
-    init(data, env);
+    init_env(data, env);
 	data->pipe = NULL;
-    data->env = env;
+    data->env = env;  // jamanakavor
+	data->fd = NULL; // read-0 write-1  // NULL
+	data->pipe_count = 0;   // 0
+	data->len_key_sum = 0;  // 0
+	data->len_val_sum = 0;  // 0
+
 }
 
 void send_env(t_data *data)

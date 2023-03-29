@@ -45,26 +45,27 @@ int check_errors(char *ptr)
     i = 0;
     while (ptr[i])
     {
-        if (pipe_error(ptr) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
-          { printf("yg\n"); return (0); }//continue
+        if (metachar_error(ptr) == 1 ) //  > a   - ?
+            return (1); //continue
+        if (syntax_error(ptr, i) == 1)
+           return (1); //continue
+        if (metachar_error(ptr) == 1)
+           return (1);	//continue  // kara chlini
         // check_qoutes(ptr); // sxala ashxatum
         // check_quot_double(ptr);
         // check_quot_one(ptr);
         if (ptr[i])
             i++;
     }
-    return (1);
+    return (0);
 }
 
 // $ls|"$ls   "
 //  asfas >>   out
-int parsing(t_data *data, char *ptr) 
+int parsing(t_data *data, char *ptr)  //return 
 {
     // if (check_errors(ptr)) 
-    // // >> >> >> >> (>>) 
-    // // >echo>, <echo<, >>echo>>, <<echo<< (newline)
-    // // cat < ls, cat < ls > ls
-        // return (EXIT_FAILURE);
+    //     return (-1);
     // if (syntax_error(ptr, &i) == 1 || metachar_error(ptr) == 1 ) // >a     ev ls|ls | "|ls|"
     // 	continue ;
     // if (syntax_error(ptr, &i) == 1)

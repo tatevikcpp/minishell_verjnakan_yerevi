@@ -13,29 +13,32 @@
 
 extern int exit_status;
 
-int	syntax_error(char *ptr, int *i)
+int	syntax_error(char *ptr, int i)
 {
-    while (ptr && ((ptr[*i] >= 9 && ptr[*i] <= 13) || ptr[*i] == 32))
-        (*i)++;
-	if (!ptr[*i])
+    while (ptr && ((ptr[i] >= 9 && ptr[i] <= 13) || ptr[i] == 32))
+        (i)++;
+	if (!ptr[i])
 	{
 		ft_printf(2, "minishell: syntax error near unexpected token  `newline'\n");
 		exit_status = 258;
 		return (1);
 	}
-	if (ptr && ((ptr[*i] == '>' && ptr[*i + 1] == '>') || (ptr[*i] == '<' && ptr[*i + 1] == '<')))
+	if (ptr && (ptr[i] == '>' && ptr[i + 1] == '>') && ptr[i + 1] == '\0')
 	{
-		if (ptr[*i] == '>' && ptr[*i + 1] == '>')
-			ft_printf(2, "minishell: syntax error near unexpected token `>>'\n");
-		if (ptr[*i] == '<' && ptr[*i + 1] == '<')
-			ft_printf(2, "minishell: syntax error near unexpected token `<<'\n");
+		ft_printf(2, "minishell: syntax error near unexpected token `>>'\n");
 		exit_status = 258;
 		return (1);
 	}
-    if (ptr && (ptr[*i] == '&' || /* ( */ptr[*i] == '|'/*  && !ptr[*i + 1]) */ || ptr[*i] == ')' || ptr[*i] == '(' || ptr[*i] == ';'
-        || ptr[*i] == '>' || ptr[*i] == '<'))
+	if (ptr && (ptr[i] == '<' && ptr[i + 1] == '<') && ptr[i + 1] == '\0')
 	{
-        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", ptr[*i]);
+		ft_printf(2, "minishell: syntax error near unexpected token `<<'\n");
+		exit_status = 258;
+		return (1);
+	}
+    if (ptr && (ptr[i] == '&' || ptr[i] == '|' || ptr[i] == ')' || ptr[i] == '(' || ptr[i] == ';'
+        || ptr[i] == '>' || ptr[i] == '<') && ptr[i + 1] == '\0')
+	{
+        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", ptr[i]);
 		exit_status = 258;
 		return (1);
 	}
@@ -47,7 +50,6 @@ int	metachar_error(char *ptr)
 	int	i;
 
 	i = 0;
-	printf("met_re\n");
 	while (ptr[i] && ptr[i] != '\0')
 	{
 		while (ptr && (ptr[i] >= 9 && ptr[i] <= 13) && ptr[i] == 32)
@@ -58,13 +60,13 @@ int	metachar_error(char *ptr)
 			&& ptr[i + 1] && ptr[i + 1] == '>'))
 		{
 			i += 2;
-			if (syntax_error(ptr, &i) == 1)
+			if (syntax_error(ptr, i) == 1)
 				return (1);
 		}
 		else if (ptr[i] && (ptr[i] == '>' || ptr[i] == '<'))
 		{
 			i++;
-			if (syntax_error(ptr, &i) == 1)
+			if (syntax_error(ptr, i) == 1)
 				return (1);
 		}
 		i++;

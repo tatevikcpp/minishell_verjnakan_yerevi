@@ -18,7 +18,7 @@ void split_string(char *input, t_data *data)
 	int		i;
 	int		k;
 	int		flag_for_null;
-	t_pipe	*node;
+	// t_pipe	*node;
 
 	i = 0;
 	k = 0;
@@ -37,8 +37,8 @@ void split_string(char *input, t_data *data)
 				input[i] = '\0';
 				flag_for_null = 1;
 			}
-			node = ft_lstnew(&input[k], data->head_env);
-			ft_lstadd_back(&data->pipe, node);
+			// node = ft_lstnew(&input[k], data->head_env);
+			ft_lstadd_back(&data->pipe,  ft_lstnew(&input[k], data->head_env));
 			k = i + 1;
 			if (flag_for_null == 1)
 			{

@@ -7,7 +7,7 @@
 t_redirect	*redirect_test(t_pipe *pipe)
 {
 	int 		i;
-	t_pipe 		*top;
+	t_pipe 		*top; //  kara  chlini
 	t_redirect	*head;
 
 	i = 0;
