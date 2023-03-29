@@ -51,7 +51,7 @@ typedef struct s_pipe
 	// int					infile;
 	// int					outfile;
 	// int					append_f;
-	int					heredoc_f;
+	// int					heredoc_f;
 	struct s_pipe		*next;  // null
 }	t_pipe;
 
