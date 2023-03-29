@@ -14,8 +14,8 @@ int init_env(t_data	*data, char **envp)
 	while (envp[i])
 	{
 		split_env = ft_split(envp[i], '=');
-		tmp_first_node->key = split_env[0];
-		tmp_first_node->val = split_env[1];
+		tmp_first_node->key = ft_strdup(split_env[0]);
+		tmp_first_node->val = ft_strdup(split_env[1]);
 		tmp_first_node->next = NULL;
 		free_matrix(split_env);
 		if (!envp[i + 1])

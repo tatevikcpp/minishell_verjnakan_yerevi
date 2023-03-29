@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_exec.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/29 21:29:33 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/03/29 21:59:31 by tkhechoy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red)
+void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe)
 {
 	// Grel nayev piperi myus paymanneri hamar
-	(void)red;
 	if (i == 0)
 	{
 		// if (pipe->heredoc_f == 1)
@@ -32,7 +43,11 @@ void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red)
 		// }
 		// else
 		// {
-		if (data->pipe_count > 1)
+		if (pipe->fd_in != 0)
+			dup2(pipe->fd_in, STDIN_FILENO); // sovorel 
+		if (pipe->fd_out != 1)
+			dup2(pipe->fd_out, STDOUT_FILENO); // sovorel
+		else if (data->pipe_count > 1)
 			dup2(data->fd[i][1], STDOUT_FILENO); // sovorel
 		// }
 	}
@@ -51,6 +66,11 @@ void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red)
 		// 	dup2(red->fd_in, 0);
 		// }
 		// else
+		if (pipe->fd_out != 1)
+			dup2(pipe->fd_out, STDOUT_FILENO); // sovorel
+		if (pipe->fd_in != 0)
+			dup2(pipe->fd_in, STDOUT_FILENO); // sovorel 
+		else
 			dup2(data->fd[i - 1][0], STDIN_FILENO);
 	}				
 	else
@@ -68,21 +88,27 @@ void pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red)
 		// }
 		// else
 		// {
+		if (pipe->fd_in != 0)
+			dup2(pipe->fd_in, STDOUT_FILENO); // sovorel 
+		else
 			dup2(data->fd[i - 1][0], STDIN_FILENO);
+		if (pipe->fd_out != 1)
+			dup2(pipe->fd_out, STDOUT_FILENO); // sovorel
+		else
 			dup2(data->fd[i][1], STDOUT_FILENO);
 		// }
 	}
-	int j = -1;
-	while (++j < count)
+	i = -1;
+	while (++i < count)
 	{
-		close(data->fd[j][1]);
-		close(data->fd[j][0]);
+		close(data->fd[i][1]);
+		close(data->fd[i][0]);
 	}
 	lsh_launch(data, pipe);
 	exit(0);
 }
 
-void pipe_exec(t_data *data, t_redirect *red)
+void pipe_exec(t_data *data)
 {
 	int		i;
 	int		count;
@@ -95,6 +121,7 @@ void pipe_exec(t_data *data, t_redirect *red)
 	{
 		if(pipe(data->fd[i]) == -1)
 		{
+			// TODO close pipes go to readline
 			printf("error\n");
 			return ;   // mtacel                
 		}
@@ -102,26 +129,27 @@ void pipe_exec(t_data *data, t_redirect *red)
 	}
 	i = 0;
 	tmp = data->pipe;
-	while (i < count && tmp)
+	while (tmp)
 	{
 		pid_t id = fork();
 		if (id == -1)
-			perror("Error: fork\n");
-		if (id == 0)
 		{
-			pipe_in_out(i, data, count, tmp, red);		
+			perror("Error: fork\n");
+			// TODO close pipes
 		}
+		if (id == 0)
+			pipe_in_out(i, data, count, tmp);		
 		tmp = tmp->next;
 		i++;
 	}
-	int j = -1;
-	while (++j < count)
+	i = -1;
+	while (++i < count)
 	{
-		close(data->fd[j][1]);
-		close(data->fd[j][0]);
+		close(data->fd[i][1]);
+		close(data->fd[i][0]);
 	}
-	j = -1;
-	while (++j < count)
+	i = -1;
+	while (++i < count)
 	{
 	// 	i = waitpid(-1, NULL, 0);
 		wait(0); // poxel waitpid

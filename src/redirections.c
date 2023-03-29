@@ -25,7 +25,7 @@ void heredoc(t_redirect *red, t_pipe *p/* ,  t_data *data */)
                 write(fd[1], "\n", 1);
             }
             close(fd[1]);
-            p->heredoc_f = 1;
+            // p->heredoc_f = 1;
             tmp->heredoc_fd = fd[0];
         }
         tmp = tmp->next;

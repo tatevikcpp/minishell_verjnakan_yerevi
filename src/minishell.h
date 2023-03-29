@@ -157,11 +157,11 @@ char 		*function(t_data *data, char *test);
 /* ------------------------------------------------------------------------------------ */
 
 /* ----------------- Execution --------------------------------------------------------- */
-void		execute(t_data *data, char *ptr);
+void		execute(t_data *data);
 
 /* ------- Pipes ------- */ /* pipe_exec.c */
-void		pipe_exec(t_data *data, t_redirect *red);
-void		pipe_in_out(int i, t_data *data, int count, t_pipe *pipe, t_redirect *red);
+void		pipe_exec(t_data *data);
+void		pipe_in_out(int i, t_data *data, int count, t_pipe *pipe);
 int			lsh_launch(t_data *data, t_pipe *pipe);
 /* -------------------- */
 

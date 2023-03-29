@@ -36,6 +36,7 @@ int lsh_launch(t_data *data, t_pipe *pipe)
 
     args = pipe->argv;
     path = access_path(data, args);
+    printf("path = %s\n", path);
     if (!path)
     {
         ft_printf(2, "minishell: %s: command not found\n", pipe->argv[0]);
@@ -44,32 +45,33 @@ int lsh_launch(t_data *data, t_pipe *pipe)
     }
 	if(execve(path, args, data->env) == -1)
     {
-		ft_printf(2, "minishell: %s: Permission denied", args[0]);
+		ft_printf(2, "minishell: %s: Permission denied", args[0]); // TODO ?
         exit_status = 126;
     }
 	return (1);
 }
 
-// void execute(t_data *data, char *ptr)
-// {
-//     if (data->pipe_count > 1)
-//     {
-//         // heredoc(data.pipe->red);
-//         pipe_exec(data, data->pipe->red);
-//     }
-//     if(data->pipe_count == 1)
-//     {
-//         if (there_is_builtin(data) == 1) 
-//         {
-//             choose_builtin(/* ptr, */ data->pipe, data);
-//         }
-//         else
-//         {
-//             // heredoc(data.pipe->red, data.pipe);
-//             // infile(data.pipe->red, data.pipe);
-//             // outfile(data.pipe->red, data.pipe);
-//             // append_red(data.pipe->red, data.pipe);
-//             pipe_exec(data, data->pipe->red);
-//         }			
-//     }
-// }
+void execute(t_data *data)
+{
+        if (data->pipe_count > 1)
+		{
+			// heredoc(data->pipe->red);
+			pipe_exec(data);
+		}
+		if (data->pipe_count == 1)
+		{
+			// if (there_is_builtin(data) == 1)
+			// {
+			// 	printf("welcome to built-ins\n");
+			// 	choose_builtin(/* ptr, */ data->pipe, data);
+			// }
+			// else
+			// {
+				// heredoc(data->pipe->red, data->pipe);
+				// infile(data->pipe->red, data->pipe);
+				// outfile(data->pipe->red, data->pipe);
+				// append_red(data->pipe->red, data->pipe);
+				pipe_exec(data);
+			// }			
+		}
+}
