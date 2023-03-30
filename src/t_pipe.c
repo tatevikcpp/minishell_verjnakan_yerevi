@@ -6,8 +6,6 @@ t_pipe *new_t_pipe(char **tmp)
 
     new_node = malloc(sizeof(t_pipe));
     new_node->argv  = tmp;
-	// printf(" new_node->argv = %s\n",  new_node->argv[0]);
-    // mnacac@ dardznel NULL;
     new_node->next = NULL;
     return (new_node);
 }

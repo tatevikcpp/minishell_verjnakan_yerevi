@@ -32,7 +32,11 @@ int open_files_for_redirect (t_pipe *pipe)
             }
         }
         else if (head_red->flag == HEREDOC)
+        {
+            if (pipe->fd_in != 0)
+                close(pipe->fd_in);
             pipe->fd_in = head_red->heredoc_fd;
+        }
         head_red = head_red->next;
     }
     return (0);
@@ -60,6 +64,7 @@ int check_errors(char *ptr)
     return (0);
 }
 
+
 // $ls|"$ls   "
 //  asfas >>   out
 int parsing(t_data *data, char *ptr)  //return 
@@ -83,13 +88,13 @@ int parsing(t_data *data, char *ptr)  //return
     while (tmp1) //pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
     {
         tmp1->red = redirect_test(tmp1); // sxal ls>a>b
-
+        heredoc(tmp1->red);
         if (open_files_for_redirect(tmp1) != 0)
             return (1);
         split_s__to_argv(data, tmp1); // *(42) => 1
         tmp1 = tmp1->next;
     }
     printf_pipe(data->pipe);
-    printf("pipe count: %d\n", data->pipe_count);
+    // printf("pipe count: %d\n", data->pipe_count);
     return (0);
 }

@@ -14,6 +14,7 @@
 # include "../ft_printf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <errno.h>
 /* ------------------------ */
 
 /* ----- Constants ----- */
@@ -157,11 +158,11 @@ char 		*function(t_data *data, char *test);
 /* ------------------------------------------------------------------------------------ */
 
 /* ----------------- Execution --------------------------------------------------------- */
-void		execute(t_data *data);
+int			execute(t_data *data);
 
 /* ------- Pipes ------- */ /* pipe_exec.c */
-void		pipe_exec(t_data *data);
-void		pipe_in_out(int i, t_data *data, int count, t_pipe *pipe);
+int			pipe_exec(t_data *data);
+void		pipe_in_out(int i, t_data *data, t_pipe *pipe);
 int			lsh_launch(t_data *data, t_pipe *pipe);
 /* -------------------- */
 
@@ -183,7 +184,7 @@ int			pipe_error(char *ptr);
 /* ------------------------------------------------------------------------------------ */
 
 /* ------------------------ Built-ins ------------------------------------------------- */
-void		choose_builtin(/* char *ptr , */ t_pipe *pipe, t_data *data);
+int			choose_builtin(/* char *ptr , */ t_pipe *pipe, t_data *data);
 int			there_is_builtin(t_data *data);
 int			ther_are_equal(char *ptr);
 
@@ -230,7 +231,7 @@ void		send_env(t_data *data); /* redirect.c */
 /* ----- unset ------------- */ /* builtin_export.c */
 // void unset_buildin(t_data *data, char *ptr);
 /* -------- unset utils -------- */
-void		ft_list_remove_if(t_data *data,/*  void *data_ref,  */int (*cmp)(),/*  char *ptr */t_pipe *pipe);
+int			ft_list_remove_if(t_data *data,/*  void *data_ref,  */int (*cmp)(),/*  char *ptr */t_pipe *pipe);
 void		remove_else_inner(t_data *data,int (*ft_strcmp)(), char **str1);
 void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 /* ------------------------------ */
@@ -242,6 +243,7 @@ void	free_matrix(char **str);
 char	*ft_strjon_free_arg1(char *s1, char const *s2);
 char	*ft_strjon_free_arg2(char const *s1, char *s2);
 char	*ft_strjon_free_both(char *s1, char *s2);
+int		add_exit_status_in_env(t_data *data, int status);
 
 
 #endif

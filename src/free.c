@@ -23,6 +23,8 @@ void    free_redirect(t_redirect *redirect)
     while (redirect)
     {
 		prev = redirect;
+		if (redirect->heredoc_fd != -1)
+			close(redirect->heredoc_fd);
         free(redirect->f_name);
 		redirect = redirect->next;
         free(prev);
@@ -36,6 +38,10 @@ void    free_pipe(t_pipe *pipe)
     while (pipe)
     {
 		prev = pipe;
+		if (pipe->fd_in != 0)
+			close(pipe->fd_in);
+		if (pipe->fd_out != 1)
+			close(pipe->fd_out);
         free(pipe->content);
         free(pipe->joined_argv);
         free_matrix(pipe->argv);

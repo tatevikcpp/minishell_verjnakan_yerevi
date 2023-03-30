@@ -1,30 +1,31 @@
 #include "minishell.h"
 
-void choose_builtin(t_pipe *pipe, t_data *data)
+int choose_builtin(t_pipe *pipe, t_data *data)
 {
     if (ft_strcmp("export", pipe->argv[0]) == 0 && !pipe->argv[1])
     {
         printf("export show:\n");
         buildin_export_all_by_alphabet(data);
-        buildin_export_all(data);
+        return(buildin_export_all(data), 0);
     }   
     else if (ft_strcmp("export", pipe->argv[0]) == 0)
     {
         printf("export work:\n");
-        builtin_export(data, pipe);
+       return(builtin_export(data, pipe), 0);
     }
     else if (ft_strcmp("echo", pipe->argv[0]) == 0)
-        ft_echo(pipe->argv);
+       return(ft_echo(pipe->argv), 0);
     else if (ft_strcmp("cd", pipe->argv[0]) == 0)
-        ft_cd(pipe->argv, data);
+       return(ft_cd(pipe->argv, data));
     else if (ft_strcmp("exit", pipe->argv[0]) == 0)
         ft_exit(pipe->argv/* , data */);
     else if (ft_strcmp("pwd", pipe->argv[0]) == 0)
-        ft_pwd();         
+       return(ft_pwd());
     else if (ft_strcmp("env", pipe->argv[0]) == 0 && !pipe->argv[1]) 
-        buildin_env_all(data);
+       return(buildin_env_all(data), 0);
     else if (ft_strcmp("unset", pipe->argv[0]) == 0)
-        ft_list_remove_if(data, ft_strcmp, pipe);
+        return(ft_list_remove_if(data, ft_strcmp, pipe), 0);
+    return (0);
 }
 
 int ther_are_equal(char *ptr)
@@ -203,7 +204,7 @@ void ft_get_remove_val(t_data *data,int (*ft_strcmp)(), char *str)
     remove_if_inner(data, ft_strcmp, line1); 
 }
 
-void ft_list_remove_if(t_data *data,int (*ft_strcmp)(),t_pipe *pipe)
+int ft_list_remove_if(t_data *data,int (*ft_strcmp)(),t_pipe *pipe)
 {    
     char **str1;
     int i;
@@ -229,6 +230,7 @@ void ft_list_remove_if(t_data *data,int (*ft_strcmp)(),t_pipe *pipe)
         }
         i++;
     }
+    return (0);
 }
 
 void remove_else_inner(t_data *data,int (*ft_strcmp)(), char **str1)

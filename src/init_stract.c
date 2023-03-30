@@ -38,6 +38,7 @@ void	struct_zeroed(t_data *data, char **env)
 	data->pipe_count = 0;   // 0
 	data->len_key_sum = 0;  // 0
 	data->len_val_sum = 0;  // 0
+	ft_t_env_add_back(&data->head_env, new_t_env("?", "0"));
 
 }
 
@@ -56,7 +57,6 @@ void send_env(t_data *data)
 		str1 = ft_strjoin(str1,str);
 		head = head->next;
 	}
-	printf("str1 = %s\n", str1);
 	data->env = ft_split(str1, ' ');
 }
 

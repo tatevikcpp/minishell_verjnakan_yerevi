@@ -1,5 +1,5 @@
 #include "minishell.h"
-
+// $A
 void hendl_dolar(t_data *data, char *str)
 {
     int     i;
@@ -29,24 +29,16 @@ void hendl_dolar(t_data *data, char *str)
 
 char *get_dolar_val(t_data *data, char *str1)
 {
-    int     flag;
-    char    *str;
     t_env   *head;
     
-    str = NULL;
-    flag = 0;
     head = data->head_env;
     while (head)    
     {
         if (ft_strcmp(head->key , str1) == 0)
-        {
-            str = head->val;
-            data->len_val_sum += ft_strlen(str);
-            flag = 1;
-        }
+            return (head->val);
         head = head->next;
     }
-    return (str);
+    return (NULL);
 }
 
 void func(char *test, int j)
@@ -97,11 +89,11 @@ char *hendl_doloar_comand(t_data *data, char *test)
         }
         if ((test[j] == '"' && !is_in_single) || (test[j] == '\'' && !is_in_double))
             j++;
-        if (!is_in_single && test[j] == '$' && (ft_isalpha(test[j+1]) || test[j+1] == '_'))
+        if (!is_in_single && test[j] == '$' && (ft_isalpha(test[j+1]) || test[j + 1] == '_' || test[j + 1] == '?'))
         {
             j++;
             i = j;
-            while((ft_isalpha(test[j]) || test[j] == '_' || ft_isdigit(test[j])))
+            while((ft_isalpha(test[j]) || test[j] == '_' || ft_isdigit(test[j]) || test[j] == '?'))
                 j++;
             str1 = ft_substr(test,i,j - i);
             ptr = get_dolar_val(data, str1);
@@ -128,49 +120,8 @@ char *hendl_doloar_comand(t_data *data, char *test)
 
 char *function(t_data *data, char *test)
 {
-    hendl_dolar(data, test);
-    // hendl_doloar_comand(data, test);
-    // printf("comand : %s\n", hendl_doloar_comand(data, test));
     return (hendl_doloar_comand(data, test));
 }
 
 
 //leaks     'dsgsdgsd$PWD g'
-//  int main(int ac,  char **av,  char **env)//kaskaceli e Tatevi hamar u shaaat 
-// {
-// 	(void)(av+ac);
-// 	// int j;
-//     int i;
-// 	t_data	data;
-    
-// 	// char *ptr = ft_strdup(" ");
-//     // char *str1;
-//     // int len;
-//     // int p;
-// 	// j = 0;
-//     i = 0;
-// 	 struct_zeroed(&data, env);
-// 	// init(&data, env);
-// 	// printf("%s\n", ft_get_value("PATH", &data));
-// 	// char	*test = "la -la \"$PWD\"$HOME $SFAFSF biuhbui $PWD  '$HOME'  sdgsdg";
-//     char *test;
-//     while (1)
-//     {
-// 		test = readline("minishell-$ ");
-//         add_history(test);
-// 	// char	*test = "la -la  'kshja' \"$OKK0M\" \"$PWD\"$HOME $SFAFSF biuhbui $PWD barev okokok '$HOME'  sdgsdg";
-//     // hendl_dolar(&data, test);
-//     // ptr = hendl_doloar_comand(&data, test);
-//     // printf("ptr: %s\n", ptr - 87);
-//     // printf("comand : %s\n", hendl_doloar_comand(&data, test));
-//     function(&data, test);
-
-//     }
-
-//     // ptr = test;
-//     // while (*test != '\0')
-//     //     test++;
-//     // printf("1111 = %s\n", ptr);
-//     // printf("test: %s\n", test - 87);
-// 	return (0);
-// }

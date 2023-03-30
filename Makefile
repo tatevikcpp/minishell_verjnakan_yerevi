@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS =  -I./readline_sona/include -ggdb3 -Wall -Wextra  #-Werror #-fstack-protector-all     -fsanitize=address -g
+CFLAGS =  -I./readline_sona/include -ggdb3  -fsanitize=address -g -Wall -Wextra  #-Werror #-fstack-protector-all    
 
 SRCS = $(wildcard ./src/*.c) 
 

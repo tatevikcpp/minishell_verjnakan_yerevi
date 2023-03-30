@@ -170,6 +170,7 @@ void	split_s__to_argv( t_data *data,  t_pipe *pipe)
 	for_free = pipe->joined_argv;
 	pipe->joined_argv = function(data, pipe->joined_argv);
 	free(for_free);
+	// printf("pipe->joined_argv = %s\n", pipe->joined_argv);
 	pipe->argv = ft_split(pipe->joined_argv, 42);// 42 ->1
 }
 

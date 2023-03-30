@@ -26,58 +26,25 @@ int main(int ac,  char **av,  char **env)
 	ptr = NULL;
 	i = 0;
 	(void)(av + ac);
-	// while (i < 10)
-	// {
-	// 	ptr = malloc(1);
-	// }
-	
 	struct_zeroed(&data, env); // jamanakavor
 	while (1)
 	{
 		free_data(&data);
 		free(ptr);
-		// print_list_head_env(&data);
 		ptr = readline("minishell-$ ");
 		if (ptr == NULL)
 			exit(1);
-		// printf("%s\n", )
 		if (*ptr == '\0')
 			continue ;
 		add_history(ptr);
-		// function(&data, ptr);
 		// if (check_errors(ptr) != 0)
 		// 	continue ;
-		if (parsing(&data, ptr) != 0)
+		if (parsing(&data, ptr) != 0 && add_exit_status_in_env(&data, 1))
 			continue ;
 		// TODO check cmd existence
-		execute(&data);
-	
-// //------------------------------------------- Sona
-		
-// 		// heredoc(ptr,&data);
-// 		// append_red();
-// 		// choose_redirect(&data,ptr);
-// 		// pipe_exec(&data);
-// 		// append_redir(ptr);
-// //------------------------------------------- Sona	
-
-
-// 		// print_list_head_env(data.head_env);	
-// 		// print_env(&data);
-// 		// print_list(data.pipe);
-// 		//////**************************
-// 		// hendl_dolar(&data, ptr);
-// 		// printf("comand : %s\n", hendl_doloar_comand(&data, ptr));
-// 		///////////////************************
-
-// 		// send_env(&data);
-		 	
-// 		// 	data.pipe
-// 		// exit(1);
-// 		// printf("ok\n");
-
+		if (data.pipe && data.pipe->argv[0])
+			add_exit_status_in_env(&data, execute(&data));
 	}
-// t_pipe *head = get_pipe_readline(&data, ptr);
 	return (0);
 }
 
