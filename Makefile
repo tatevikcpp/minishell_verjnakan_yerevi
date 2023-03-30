@@ -20,7 +20,7 @@ LINKERLIBFTPRINTF = ./ft_printf/libftprintf.a
 
 FTPRINTF = ./ft_printf
 
-HEADER = $(wildcard /src/*.h) 
+HEADER = $(wildcard ./src/*.h) 
 
 RM = rm -f
 

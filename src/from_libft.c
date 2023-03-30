@@ -45,7 +45,7 @@ t_pipe	*ft_lstnew(void *content, t_env *env)
 		return (NULL);
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
-	new_node->s = NULL;
+	new_node->joined_argv = NULL;
 	new_node->content = ft_strdup(content);
 	new_node->argv = NULL;
 	new_node->red = NULL;

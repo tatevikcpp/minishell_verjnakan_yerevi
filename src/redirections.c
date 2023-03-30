@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void heredoc(t_redirect *red, t_pipe *p/* ,  t_data *data */)
+void heredoc(t_redirect *red /*, t_pipe *p  ,  t_data *data */)
 {
     t_redirect *tmp;
     char       *s;

@@ -19,6 +19,7 @@ int check_symbol(char *str)
 
 void    ft_echo(char **ptr)
 {
+    // printf("xdgdsg\n");
     int     i;
     int     flag;
 

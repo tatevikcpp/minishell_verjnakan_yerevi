@@ -83,6 +83,7 @@ int parsing(t_data *data, char *ptr)  //return
     while (tmp1) //pttvum e michpaipain taracutjunerov u juraqanchjuri hamar gtnum redirektnery u faili anuner@
     {
         tmp1->red = redirect_test(tmp1); // sxal ls>a>b
+
         if (open_files_for_redirect(tmp1) != 0)
             return (1);
         split_s__to_argv(data, tmp1); // *(42) => 1

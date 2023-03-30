@@ -53,25 +53,25 @@ int lsh_launch(t_data *data, t_pipe *pipe)
 
 void execute(t_data *data)
 {
-        if (data->pipe_count > 1)
-		{
-			// heredoc(data->pipe->red);
-			pipe_exec(data);
-		}
-		if (data->pipe_count == 1)
-		{
-			// if (there_is_builtin(data) == 1)
-			// {
-			// 	printf("welcome to built-ins\n");
-			// 	choose_builtin(/* ptr, */ data->pipe, data);
-			// }
-			// else
-			// {
-				// heredoc(data->pipe->red, data->pipe);
-				// infile(data->pipe->red, data->pipe);
-				// outfile(data->pipe->red, data->pipe);
-				// append_red(data->pipe->red, data->pipe);
-				pipe_exec(data);
-			// }			
+    if (data->pipe_count > 1)
+    {
+        // heredoc(data->pipe->red);
+        pipe_exec(data);
+    }
+    if (data->pipe_count == 1)
+    {
+        if (there_is_builtin(data) == 1)
+        {
+            printf("welcome to built-ins\n");
+            choose_builtin(/* ptr, */ data->pipe, data);
+        }
+        else
+        {
+            // heredoc(data->pipe->red, data->pipe);
+            // infile(data->pipe->red, data->pipe);
+            // outfile(data->pipe->red, data->pipe);
+            // append_red(data->pipe->red, data->pipe);
+            pipe_exec(data);
+        }			
 		}
 }

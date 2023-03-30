@@ -23,7 +23,6 @@ void print_lists(t_pipe *red)
 	}
 }
 
-
 void printf_pipe(t_pipe *pipe)
 {
 	t_pipe *pipe_in;

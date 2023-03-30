@@ -34,7 +34,8 @@ int main(int ac,  char **av,  char **env)
 	struct_zeroed(&data, env); // jamanakavor
 	while (1)
 	{
-
+		free_data(&data);
+		free(ptr);
 		// print_list_head_env(&data);
 		ptr = readline("minishell-$ ");
 		if (ptr == NULL)
@@ -50,8 +51,7 @@ int main(int ac,  char **av,  char **env)
 			continue ;
 		// TODO check cmd existence
 		execute(&data);
-		free_data(&data);
-		free(ptr);
+	
 // //------------------------------------------- Sona
 		
 // 		// heredoc(ptr,&data);

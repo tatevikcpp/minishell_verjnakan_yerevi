@@ -40,7 +40,7 @@ typedef struct s_env
 
 typedef struct s_pipe
 {
-	char				*s;
+	char				*joined_argv;
 	char				*content;
 	int					fd_in;  // 0
 	int					fd_out; // 1
@@ -169,7 +169,7 @@ int			lsh_launch(t_data *data, t_pipe *pipe);
 void		infile(t_redirect *red, t_pipe *pipe);
 void		outfile(t_redirect *red, t_pipe *pipe);
 // void 	heredoc(t_redirect *red);
-void		heredoc(t_redirect *red, t_pipe *p/* ,  t_data *data */);
+void		heredoc(t_redirect *red /*, t_pipe *p ,  t_data *data */);
 void		append_red(t_redirect *red,  t_pipe *pipe);
 void		choose_redirect(t_pipe *pipe, t_redirect *red);
 /* ------------------------------ */
@@ -239,5 +239,9 @@ void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 
 void	free_data(t_data *data);
 void	free_matrix(char **str);
+char	*ft_strjon_free_arg1(char *s1, char const *s2);
+char	*ft_strjon_free_arg2(char const *s1, char *s2);
+char	*ft_strjon_free_both(char *s1, char *s2);
+
 
 #endif

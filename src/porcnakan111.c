@@ -1,25 +1,11 @@
 #include "minishell.h"
 
-// void	redirect_to_quote(char *str, int *i, char c)
-// {
-//     char *ptr = NULL;
-// 	if (str && *i < ft_strlen(str))
-// 	{
-// 		if (str[*i] == c)
-// 		{
-// 			(*i)++;
-// 			ptr = ft_strjoin(ptr, split_quote(str, &(*i), c));
-// 		}
-// 		(*i)++;
-// 	}
-// }
-
 void hendl_dolar(t_data *data, char *str)
 {
-    int i;
-    int j;    
-    char *str1;
-    char *val;
+    int     i;
+    int     j;    
+    char    *str1;
+    char    *val;
 
     i = 0;
     j = 0;
@@ -32,8 +18,9 @@ void hendl_dolar(t_data *data, char *str)
             while((ft_isalpha(str[j]) || str[j] == '_' || ft_isdigit(str[j])))
                 j++;
             str1 = ft_substr(str,i,j - i);
-            data-> len_key_sum += ft_strlen(str1);
+            data->len_key_sum += ft_strlen(str1);
             val = get_dolar_val(data, str1);
+            free(str1);
             j--;
         }
         j++;
@@ -42,13 +29,13 @@ void hendl_dolar(t_data *data, char *str)
 
 char *get_dolar_val(t_data *data, char *str1)
 {
-    t_env *head;
-    char *str;
-    int flag;
-    head = data->head_env;
-
-    flag = 0;
+    int     flag;
+    char    *str;
+    t_env   *head;
+    
     str = NULL;
+    flag = 0;
+    head = data->head_env;
     while (head)    
     {
         if (ft_strcmp(head->key , str1) == 0)
@@ -59,12 +46,6 @@ char *get_dolar_val(t_data *data, char *str1)
         }
         head = head->next;
     }
-    if (flag == 0)
-    {
-        str = str1;
-        data->len_val_sum += ft_strlen(str1);
-    }
-
     return (str);
 }
 
@@ -97,7 +78,7 @@ char *hendl_doloar_comand(t_data *data, char *test)
     j = 0;
     is_in_single = 0;
     is_in_double = 0;
-    str_line = ptr;
+    str_line = NULL;
     while(test[j])
     {
         if (test[j] == '\'' && !is_in_double)
@@ -124,23 +105,24 @@ char *hendl_doloar_comand(t_data *data, char *test)
                 j++;
             str1 = ft_substr(test,i,j - i);
             ptr = get_dolar_val(data, str1);
+            free(str1);
 			if (ptr)
-                str_line = ft_strjoin(str_line,ptr);
+                str_line = ft_strjon_free_arg1(str_line,ptr);
             j--;
         }
         else if (!(test[j] == '\'' && is_in_single) && !(test[j] == '"' && is_in_double))
         {
             ptr = ft_substr(test, j, 1);
-            str_line = ft_strjoin(str_line, ptr);
+            str_line = ft_strjon_free_both(str_line, ptr);
         }
         if (test[j] && !(test[j] == '\'' && is_in_single) && !(test[j] == '"' && is_in_double))// else?
             j++;
 	}
-    if (is_in_single || is_in_double)
-    {
-        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", '"');// '\'', UXXEL, huysy dnel kisvelu vtra
-        return ((char *)0);
-    }
+    // if (is_in_single || is_in_double)
+    // {
+    //     ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", '"');// '\'', UXXEL, huysy dnel kisvelu vtra
+    //     return ((char *)0);
+    // }
     return (str_line);
 }
 

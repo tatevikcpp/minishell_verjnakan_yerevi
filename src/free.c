@@ -18,22 +18,30 @@ void	free_matrix(char **str)
 
 void    free_redirect(t_redirect *redirect)
 {
-    if (redirect)
+	t_redirect *prev;
+
+    while (redirect)
     {
+		prev = redirect;
         free(redirect->f_name);
-        free(redirect);
+		redirect = redirect->next;
+        free(prev);
     }
 }
 
 void    free_pipe(t_pipe *pipe)
 {
-    if (pipe)
+	t_pipe *prev;
+
+    while (pipe)
     {
+		prev = pipe;
         free(pipe->content);
-        free(pipe->s);
+        free(pipe->joined_argv);
         free_matrix(pipe->argv);
         free_redirect(pipe->red);
-        free(pipe);
+		pipe = pipe->next;
+        free(prev);
     }
 }
 

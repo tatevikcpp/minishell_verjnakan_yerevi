@@ -84,25 +84,25 @@ int	redirect_f_name_flag(t_pipe *top, t_redirect **head, int *i)
 // "ls>"asfas
 // "ls>"asfas >a"    asfasf"dgadsg
 
-void	redirect_to_quote(t_pipe *top, int *i, char c)
-{
-	if (top->content && *i < ft_strlen(top->content))
-	{
-		if (top->content[*i] == c)
-		{
-			// int k = *i;
-			(*i)++;
-			top->s = ft_strjoin(top->s, split_quote(top->content, &(*i), c));
-			// printf("top->s: %s\n", top->s);
-			// if (top->content[k] == '"' && top->content[k + 1] == '$')
-			// {
-			// 	top->s = ft_strjoin(top->s, hendl_dolar(top, top->s, i));
-			// }
-			top->s = ft_strjoin_ft(top->s, 42);
-		}
-		(*i)++;
-	}
-}
+// void	redirect_to_quote(t_pipe *top, int *i, char c)
+// {
+// 	if (top->content && *i < ft_strlen(top->content))
+// 	{
+// 		if (top->content[*i] == c)
+// 		{
+// 			// int k = *i;
+// 			(*i)++;
+// 			top->s = ft_strjoin(top->s, split_quote(top->content, &(*i), c)); //split_quote - malloc 2
+// 			// printf("top->s: %s\n", top->s);
+// 			// if (top->content[k] == '"' && top->content[k + 1] == '$')
+// 			// {
+// 			// 	top->s = ft_strjoin(top->s, hendl_dolar(top, top->s, i));
+// 			// }
+// 			top->s = ft_strjoin_ft(top->s, 42);
+// 		}
+// 		(*i)++;
+// 	}
+// }
 
 /* void	redirect_to_quote(t_pipe *top, int *i, char c)
 {
@@ -165,8 +165,12 @@ void	split_s__to_argv( t_data *data,  t_pipe *pipe)
 {
 	// printf("pipe->s %s\n", pipe->s);
 	// exit(1);
-	pipe->s = function(data, pipe->s);
-	pipe->argv = ft_split(pipe->s, 42);// 42 ->1
+	char *for_free;
+
+	for_free = pipe->joined_argv;
+	pipe->joined_argv = function(data, pipe->joined_argv);
+	free(for_free);
+	pipe->argv = ft_split(pipe->joined_argv, 42);// 42 ->1
 }
 
 // char *hendl_dolar(t_pipe *pipe, char *str, int *i)
