@@ -98,7 +98,8 @@ char *hendl_export_var(char *str1)
     k++;
     while (str1[k])
     {
-        if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_'  && ft_isdigit(str1[k]) == 0 )
+        if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_' 
+            && ft_isdigit(str1[k]) == 0 )
             return ("not a valid identifier");
         k++;
     }

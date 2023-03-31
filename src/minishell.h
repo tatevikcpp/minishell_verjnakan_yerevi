@@ -14,13 +14,15 @@
 # include "../ft_printf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <errno.h>
+# include <errno.h>
+# include <signal.h>
 /* ------------------------ */
 
 /* ----- Constants ----- */
 # define HEREDOC 5
 # define METACHARACTER "|&;()<> \n\t"
 # define METACHARACTER_ERROR "|&;)(<>"
+# define SPACE " \n\t"
 /* --------------------- */
 
 /* ----- Structures ----- */
@@ -28,6 +30,7 @@ typedef struct s_redirect
 {
 	int					flag;  // O_APPEND || O_TRUNC || O_RDONLY || HEREDOC
 	char				*f_name;
+	char				*f_name_backup;
 	int					heredoc_fd;
 	struct s_redirect	*next;
 }	t_redirect;
@@ -58,6 +61,8 @@ typedef struct s_pipe
 
 typedef struct s_data
 {
+	int					pipe_fd;
+	int					fd1[2];
 	int					(*fd)[2]; // read-0 write-1  // NULL
 	t_env				*head_env;
 	char				**env;
@@ -170,7 +175,7 @@ int			lsh_launch(t_data *data, t_pipe *pipe);
 void		infile(t_redirect *red, t_pipe *pipe);
 void		outfile(t_redirect *red, t_pipe *pipe);
 // void 	heredoc(t_redirect *red);
-void		heredoc(t_redirect *red /*, t_pipe *p ,  t_data *data */);
+void 		heredoc(t_data *data, t_redirect *red);
 void		append_red(t_redirect *red,  t_pipe *pipe);
 void		choose_redirect(t_pipe *pipe, t_redirect *red);
 /* ------------------------------ */
@@ -245,5 +250,8 @@ char	*ft_strjon_free_arg2(char const *s1, char *s2);
 char	*ft_strjon_free_both(char *s1, char *s2);
 int		add_exit_status_in_env(t_data *data, int status);
 
+
+
+void pipe_in_out(int i, t_data *data, t_pipe *pipe);
 
 #endif

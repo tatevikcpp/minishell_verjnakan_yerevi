@@ -31,7 +31,9 @@ int	replace_env(t_env *lst, t_env *new)
         if (ft_strcmp(lst->key , new->key) == 0)
 		{
 			free(lst->val);
-			lst->val = ft_strdup(new->val);
+			lst->val = new->val;
+			free(new->key);
+			free(new);
             return (1);
 		}
         lst = lst->next;

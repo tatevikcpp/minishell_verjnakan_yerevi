@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 20:44:36 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/30 17:04:12 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/03/31 20:06:25 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*ft_strjoin_ft(char const *s1, char c)
 	return (ptr - k - 1);
 }
 
-// ls">" asfas
 int	redirect_to_command(t_pipe *top, int *i)
 {
 	int 	k;
@@ -50,9 +49,8 @@ int	redirect_to_command(t_pipe *top, int *i)
 	free(tmp_comand);
 	top->joined_argv = ft_strjon_free_arg1(top->joined_argv, tmp_1);
 	free(tmp_1);
-	// top->s = ft_strjoin(top->s, ft_strtrim(tmp_comand, METACHARACTER));
 	tmp_1 = top->joined_argv;
-	top->joined_argv = ft_strjoin_ft(top->joined_argv, 42);
+	top->joined_argv = ft_strjoin_ft(top->joined_argv, 1);
 	free(tmp_1);
 	return (1);
 }

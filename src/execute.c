@@ -33,27 +33,35 @@ int lsh_launch(t_data *data, t_pipe *pipe)
 {
 	char    **args;
     char    *path;
-    if (there_is_builtin(data) == 1)
+    if (pipe->argv)
     {
-        printf("welcome to built-ins\n");
-        exit (choose_builtin(/* ptr, */ data->pipe, data));
+        if (there_is_builtin(data) == 1)
+        {
+            printf("welcome to built-ins\n");
+            exit (choose_builtin(/* ptr, */ data->pipe, data));
+        }
+        args = pipe->argv;
+        path = access_path(data, args);
+        printf("path = %s\n", path);
+        if(execve(path, args, data->env) == -1)
+        {
+            ft_printf(2, "minishell: %s: %s\n", args[0], strerror(errno));
+            exit(127);
+        }
     }
-    args = pipe->argv;
-    path = access_path(data, args);
-    printf("path = %s\n", path);
-	if(execve(path, args, data->env) == -1)
-    {
-		ft_printf(2, "minishell: %s: %s\n", args[0], strerror(errno));
-        exit(127);
-    }
-	return (1);
+	exit(0);
 }
 
 int execute(t_data *data)
 {
+    int res;
+
     if (data->pipe_count == 1 && there_is_builtin(data) == 1)
         return (choose_builtin(/* ptr, */ data->pipe, data));
     else
-        return (pipe_exec(data));
+    {
+        res = pipe_exec(data);
+        return (res);
+    }
     return (0);
 }

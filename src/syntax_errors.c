@@ -13,11 +13,21 @@
 
 extern int exit_status;
 
+int	is_behind_meta(char *str, char *start_str)
+{
+	while (str != start_str && ft_strchr(SPACE, *str))
+		str--;
+	if (ft_strchr(METACHARACTER, *str))
+		return (1);
+	return (0);
+}
+// TODO  cat <<>a
+// cat >>> a
 int	syntax_error(char *ptr, int i)
 {
     while (ptr && ((ptr[i] >= 9 && ptr[i] <= 13) || ptr[i] == 32))
         (i)++;
-	if (!ptr[i])
+	if (!ptr[i] && is_behind_meta(&ptr[i], ptr))
 	{
 		ft_printf(2, "minishell: syntax error near unexpected token  `newline'\n");
 		exit_status = 258;
