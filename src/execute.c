@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:36:40 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:26:33 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,10 @@ int	lsh_launch(t_data *data, t_pipe *pipe)
 	if (pipe->argv)
 	{
 		if (there_is_builtin(pipe) == 1)
-		{
-			printf("welcome to built-ins\n");
 			exit(choose_builtin(pipe, data, 1));
-		}
 		args = pipe->argv;
 		path = access_path(data, args);
-		printf("path = %s\n", path);
+		printf("path = %s\n", path); // TODO null
 		if (execve(path, args, data->env) == -1)
 		{
 			ft_printf(2, "minishell: %s: %s\n", args[0], strerror(errno));

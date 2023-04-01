@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_for_export.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 13:37:01 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:33:12 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:58:52 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,5 @@ char	**ft_split_for_export(char const *s, char c)
 		}
 		i++;
 	}
-	split[j] = 0;
 	return (split);
 }

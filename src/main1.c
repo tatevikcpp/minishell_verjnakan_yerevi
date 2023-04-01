@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:51:48 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:28:43 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,16 @@
 int	there_is_builtin(t_pipe *pipe)
 {
 	int		i;
-	char	*build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
+	char	*build_in[10];
 
+	build_in[0] = "cd";
+	build_in[1] = "echo";
+	build_in[2] = "pwd";
+	build_in[3] = "exit";
+	build_in[4] = "env";
+	build_in[5] = "unset";
+	build_in[6] = "export";
+	build_in[7] = NULL;
 	i = 0;
 	if (pipe->argv && pipe->argv[0])
 	{
@@ -30,20 +38,18 @@ int	there_is_builtin(t_pipe *pipe)
 	return (0);
 }
 
-void	sig_int(int sig_num)
+char	*ft_readline(char *str, t_data *data)
 {
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	char	*ptr;
+
+	set_term_attr(0);
+	ptr = readline(str);
+	set_term_attr(1);
+	if (ptr == NULL && ft_printf(2, "exit\n"))
+		exit(ft_atoi(get_dolar_val(data, "?")));
+	return (ptr);
 }
 
-void	handle_signal(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, &sig_int);
-}
-
-// ls |>b| >y|ls
 int	main(int ac, char **av, char **env)
 {
 	int		i;
@@ -59,11 +65,7 @@ int	main(int ac, char **av, char **env)
 		handle_signal();
 		free_data(&data);
 		free(ptr);
-		set_term_attr(0);
-		ptr = readline("minishell-$ ");
-		set_term_attr(1);
-		if (ptr == NULL && ft_printf(2, "exit\n"))
-			exit(ft_atoi(get_dolar_val(&data, "?")));
+		ptr = ft_readline("minishell-$ ", &data);
 		if (*ptr == '\0')
 			continue ;
 		add_history(ptr);

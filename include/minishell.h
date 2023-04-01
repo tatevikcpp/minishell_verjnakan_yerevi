@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:48:46 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:22:04 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int			ther_are_equal(char *ptr);
 int			builtin_export(t_pipe *pipe, int fd);
 int			buildin_export_sort_by_alphabet(t_pipe *pipe);
 char		**ft_split_for_export(char const	*s, char c);
-char		*hendl_export_var(char *str1);
+int			hendl_export_var(char *str1);
 /* ----- export utils ------ */
 // char		*hendl_export_var(char *str1);
 void		buildin_export_all(t_pipe *pipe, int fd);
@@ -266,5 +266,7 @@ char		*ft_strjon_free_both(char *s1, char *s2);
 /* ---- Signals ---- */
 void		set_term_attr(int on_off);
 /* ----------------- */
-
+void		handle_signal(void);
+int			check_quote_double(char *ptr);
+int			add_exit_status_in_env(t_data *data, int status);
 #endif

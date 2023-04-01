@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:39:36 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:22:51 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	built_in_creat(int i, char **str1, t_pipe *pipe)
+static void	built_in_creat(char **str1, t_pipe *pipe)
 {
-	t_env	*head;
 	t_env	*tmp;
 
 	ft_t_env_add_back(&pipe->head_env, new_t_env(str1[0], str1[1]));
@@ -26,11 +25,10 @@ static void	built_in_creat(int i, char **str1, t_pipe *pipe)
 	}
 }
 
-static void	export_plus(int i, char **str1, t_pipe *pipe, int len)
+static void	export_plus(char **str1, t_pipe *pipe, int len)
 {
 	char	*str;
 	t_env	*head;
-	t_env	*new;
 
 	str = str1[0];
 	str[len - 1] = '\0';
@@ -44,17 +42,17 @@ static void	export_plus(int i, char **str1, t_pipe *pipe, int len)
 		}
 		head = head->next;
 	}
-	built_in_creat(i, str1, pipe);
+	built_in_creat(str1, pipe);
 }
 
-char	*hendl_export_var(char *str1)
+int	hendl_export_var(char *str1)
 {
 	int	k;
 
 	k = 0;
 	if (ft_isalpha(str1[k]) == 0 && str1[k] != '_')
 	{
-		return ("not a valid identifier");
+		return (1);
 	}
 	k++;
 	while (str1[k])
@@ -63,10 +61,10 @@ char	*hendl_export_var(char *str1)
 			break ;
 		if (ft_isalpha(str1[k]) == 0 && str1[k] != '_'
 			&& ft_isdigit(str1[k]) == 0)
-			return ("not a valid identifier");
+			return (1);
 		k++;
 	}
-	return (str1);
+	return (0);
 }
 
 void	buildin_export_all(t_pipe *pipe, int fd)
@@ -105,20 +103,18 @@ int	builtin_export(t_pipe *pipe, int fd)
 	{
 		str1 = ft_split_for_export(pipe->argv[i], '=');
 		if ((str1[0] == NULL && free_matrix(str1))
-			|| (ft_strcmp(hendl_export_var(str1[0]),
-					"not a valid identifier") == 0 && free_matrix(str1)))
+			|| (hendl_export_var(str1[0]) != 0 && free_matrix(str1)))
 		{	
 			ret = 1;
 			ft_printf(2, "minishell: export: `%s' not a valid\
 identifier\n", pipe->argv[i++]);
 			continue ;
 		}
-		if (str1[0][ft_strlen(str1[0]) - 1] == '+')
-			export_plus(i, str1, pipe, ft_strlen(str1[0]));
+		if (++i && str1[0][ft_strlen(str1[0]) - 1] == '+')
+			export_plus(str1, pipe, ft_strlen(str1[0]));
 		else
-			built_in_creat(i, str1, pipe);
+			built_in_creat(str1, pipe);
 		free_matrix(str1);
-		i++;
 	}
 	return (ret);
 }

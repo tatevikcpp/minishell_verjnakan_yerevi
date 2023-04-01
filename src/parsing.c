@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:44:56 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:34:21 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ int	parsing(t_data *data, char *ptr)
 {
 	t_pipe	*tmp1;
 
-	tmp1 = data->pipe;
 	if (check_quote_double(ptr) != 0)
 		return (1);
 	split_string(ptr, data);
+	tmp1 = data->pipe;
 	while (tmp1)
 	{
 		tmp1->red = redirect_test(tmp1);
@@ -147,5 +147,6 @@ int	parsing(t_data *data, char *ptr)
 		tmp1 = tmp1->next;
 	}
 	printf_pipe(data->pipe);
+	printf("pipe count %d\n", data->pipe_count);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   porcnakan.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:01:58 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:45:15 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:24:31 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,3 @@ char	*get_dolar_val(t_data *data, char *str1)
 	}
 	return (NULL);
 }
-
-void	print_list_head_env_pipe(t_pipe *pipe)
-{
-	t_env	*head;
-
-	printf("ok\n");
-	head = pipe->head_env;
-	while (head)
-	{
-		printf("head->key: %s\nhead->val: %s\n", head->key, head->val);
-		if (head->next == NULL)
-			return ;
-		head = head->next;
-	}
-}
-
-// echo 'as$PW"D' "$PWD gvy'''''vgb"

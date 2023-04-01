@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_list_remove_if.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:38:57 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:32:46 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:40:10 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static void	remove_else_inner(t_pipe *pipe, char **str1)
 
 int	ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)())
 {
-	char	**str1;
 	int		i;
 	int		ret;
 
@@ -50,8 +49,7 @@ int	ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)())
 	i = 1;
 	while (pipe->argv[i])
 	{
-		if (ft_strcmp(hendl_export_var(pipe->argv[i]),
-				"not a valid identifier") == 0)
+		if (hendl_export_var(pipe->argv[i]) != 0)
 		{
 			ret = 1;
 			ft_printf(2, "minishell:  %s `%s' not a valid identifier\n",

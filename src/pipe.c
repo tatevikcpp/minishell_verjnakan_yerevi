@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 13:41:38 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:21:20 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:32:07 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ void	split_string(char *input, t_data *data)
 		flag_for_null = 0;
 		i = for_space(input, '"', i);
 		i = for_space(input, '\'', i);
-		if (i != 0 && (input[i] == '|' || input[i + 1] == '\0'))
+		if (i != 0 && (input[i] == '|' || !input[i] || input[i + 1] == '\0'))
 		{
-			if (input[i + 1] != '\0' || (input[i + 1] == '\0'
-					&& input[i] == '|'))
+			if (input[i] && input[i] == '|')
 				input[i] = flag_for_null++;
 			ft_lstadd_back(&data->pipe, ft_lstnew(&input[k], data->head_env));
 			k = i + 1;

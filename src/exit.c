@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:37:36 by adashyan         ###   ########.fr       */
+/*   Created: 2023/04/01 21:09:30 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 21:11:25 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// 9223372036854775807
 
 int	is_digit(char *str)
 {
@@ -27,7 +25,6 @@ int	is_digit(char *str)
 	}
 	return (0);
 }
-// exit +0000000009223372036854775807
 
 int	is_valid(char *str, int *num_metka)
 {
@@ -60,13 +57,14 @@ int	is_valid(char *str, int *num_metka)
 
 int	ft_exit(char **str, t_data *data)
 {
-	int	num_metka;
+	int		num_metka;
+	char	*tmp_for_free;
 
-	if (!str[1])
-	{
-		ft_putstr_fd("exit\n", 2);
+	if (!str[1] && ft_printf(2, "exit\n"))
 		exit(ft_atoi(get_dolar_val(data, "?")));
-	}
+	tmp_for_free = str[1];
+	str[1] = ft_strtrim(str[1], " \n\t");
+	free(tmp_for_free);
 	if (is_valid(str[1], &num_metka) != 0)
 	{
 		ft_printf(2, "exit\nminisehll: exit: %s: numeric argument\
@@ -75,9 +73,10 @@ required\n", str[1]);
 	}
 	if (str[2])
 	{
-		ft_printf(2, "minishell: exit: %s: too many arguments", str[2]);
+		ft_printf(2, "minishell: exit: %s: too many arguments\n", str[2]);
 		return (1);
 	}
+	ft_printf(2, "exit\n");
 	exit(ft_atoi(str[1] + num_metka));
 	return (0);
 }
