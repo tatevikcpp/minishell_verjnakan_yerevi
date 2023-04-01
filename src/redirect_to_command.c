@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_to_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 20:44:36 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 20:06:25 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:25:41 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ char	*ft_strjoin_ft(char const *s1, char c)
 
 int	redirect_to_command(t_pipe *top, int *i)
 {
-	int 	k;
+	int		k;
 	char	*tmp_1;	
 	char	*tmp_comand;
-	
+
 	k = 0;
 	k = (*i);
 	while (top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
 	{
 		*i = for_space(top->content, '\'', *i);
 		*i = for_space(top->content, '"', *i);
-		if (top->content[*i]  && !ft_strchr(METACHARACTER, top->content[*i]))
+		if (top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
 			(*i)++;
 	}
 	tmp_comand = ft_substr(top->content, k, *i - k + 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 20:23:21 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/22 18:54:23 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 19:43:47 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ int	ft_printf(int fd, const char *s, ...)
 	va_end(arg);
 	return (len);
 }
-

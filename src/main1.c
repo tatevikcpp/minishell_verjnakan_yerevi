@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main1.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 20:51:48 by adashyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-int there_is_builtin(t_pipe *pipe)
+int	there_is_builtin(t_pipe *pipe)
 {
-	int i;
-	char *build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
+	int		i;
+	char	*build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
 
 	i = 0;
 	if (pipe->argv && pipe->argv[0])
@@ -19,23 +30,21 @@ int there_is_builtin(t_pipe *pipe)
 	return (0);
 }
 
-void sig_int(int sig_num)
+void	sig_int(int sig_num)
 {
-	// (void)sig_num;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
 
-void handle_signal(void)
+void	handle_signal(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &sig_int);
-
 }
 
 // ls |>b| >y|ls
-int main(int ac,  char **av,  char **env)
+int	main(int ac, char **av, char **env)
 {
 	int		i;
 	t_data	data;
@@ -44,7 +53,7 @@ int main(int ac,  char **av,  char **env)
 	ptr = NULL;
 	i = 0;
 	(void)(av + ac);
-	struct_zeroed(&data, env); // jamanakavor
+	struct_zeroed(&data, env);
 	while (1)
 	{
 		handle_signal();
@@ -67,4 +76,3 @@ int main(int ac,  char **av,  char **env)
 	}
 	return (0);
 }
-

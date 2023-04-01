@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 16:53:16 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 16:53:41 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:02:58 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_symbol(char **str, int *k)
+int	check_symbol(char **str, int *k)
 {
-	int i;
-	int j;
-	int flag;
+	int	i;
+	int	j;
+	int	flag;
 
 	i = 1;
 	flag = 0;
@@ -39,21 +39,20 @@ int check_symbol(char **str, int *k)
 	return (*k = i, flag);
 }
 
-void    ft_echo(char **ptr, int fd)
+void	ft_echo(char **ptr, int fd)
 {
-	int     i;
-	int     flag;
+	int	i;
+	int	flag;
 
 	i = 1;
 	flag = 0;
-	
-	if(check_symbol(ptr, &i) == 1)
+	if (check_symbol(ptr, &i) == 1)
 		flag = 1;
-	while(ptr[i])
+	while (ptr[i])
 	{
 		write(fd, ptr[i], ft_strlen(ptr[i]));
 		i++;
-		if(ptr[i])
+		if (ptr[i])
 			write(fd, " ", 1);
 	}
 	if (flag == 0)

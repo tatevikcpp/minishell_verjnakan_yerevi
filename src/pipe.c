@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 13:41:38 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 20:01:50 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:21:20 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 // //  |$ls|"$ls   "|a
 
-void split_string(char *input, t_data *data)
+void	split_string(char *input, t_data *data)
 {
 	int		i;
 	int		k;
@@ -30,9 +30,9 @@ void split_string(char *input, t_data *data)
 		if (i != 0 && (input[i] == '|' || input[i + 1] == '\0'))
 		{
 			if (input[i + 1] != '\0' || (input[i + 1] == '\0'
-				&& input[i] == '|')) 
+					&& input[i] == '|'))
 				input[i] = flag_for_null++;
-			ft_lstadd_back(&data->pipe,  ft_lstnew(&input[k], data->head_env));
+			ft_lstadd_back(&data->pipe, ft_lstnew(&input[k], data->head_env));
 			k = i + 1;
 			if (flag_for_null == 1 && ++i)
 				data->pipe_count++;

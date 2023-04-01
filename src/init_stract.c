@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_stract.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:58:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 20:58:51 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:14:20 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int init_env(t_data	*data, char **envp)
+int	init_env(t_data	*data, char **envp)
 {
 	int		i;
 	t_env	*tmp_first_node;
@@ -43,39 +43,38 @@ int init_env(t_data	*data, char **envp)
 
 void	struct_zeroed(t_data *data, char **env)
 {
-    init_env(data, env);
+	init_env(data, env);
 	data->pipe = NULL;
-    data->env = env;  // jamanakavor
-	data->fd = NULL; // read-0 write-1  // NULL
-	data->pipe_count = 0;   // 0
-	data->len_key_sum = 0;  // 0
-	data->len_val_sum = 0;  // 0
+	data->env = env;
+	data->fd = NULL;
+	data->pipe_count = 0;
+	data->len_key_sum = 0;
+	data->len_val_sum = 0;
 	ft_t_env_add_back(&data->head_env, new_t_env("?", "0"));
-
 }
 
-void send_env(t_data *data)
+void	send_env(t_data *data)
 {
-	t_env *head;
-	char *str;
-	char *str1 = ft_strdup(" ");
+	t_env	*head;
+	char	*str;
+	char	*str1;
 
+	str1 = ft_strdup(" ");
 	head = data->head_env;
 	while (head)
 	{
 		str = ft_strjoin(head->key, "=");
 		str = ft_strjoin(str, head->val);
 		str = ft_strjoin(str, " ");
-		str1 = ft_strjoin(str1,str);
+		str1 = ft_strjoin(str1, str);
 		head = head->next;
 	}
 	data->env = ft_split(str1, ' ');
 }
 
-
-char *ft_get_value(char *key, t_data *ptr)
+char	*ft_get_value(char *key, t_data *ptr)
 {
-	t_env *head_env;
+	t_env	*head_env;
 
 	head_env = ptr->head_env;
 	while (head_env)

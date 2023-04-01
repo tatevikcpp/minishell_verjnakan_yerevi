@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 15:31:21 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:39:36 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void built_in_creat(int i, char **str1, t_pipe *pipe)
+static void	built_in_creat(int i, char **str1, t_pipe *pipe)
 {
-	t_env *head;
-	t_env *tmp; 
+	t_env	*head;
+	t_env	*tmp;
+
 	ft_t_env_add_back(&pipe->head_env, new_t_env(str1[0], str1[1]));
 	if (str1[1] == NULL)
 	{
@@ -25,11 +26,11 @@ static void built_in_creat(int i, char **str1, t_pipe *pipe)
 	}
 }
 
-static void export_plus(int i, char **str1, t_pipe *pipe, int len)
+static void	export_plus(int i, char **str1, t_pipe *pipe, int len)
 {
-	char *str;
-	t_env *head;
-	t_env *new; 
+	char	*str;
+	t_env	*head;
+	t_env	*new;
 
 	str = str1[0];
 	str[len - 1] = '\0';
@@ -42,16 +43,16 @@ static void export_plus(int i, char **str1, t_pipe *pipe, int len)
 			return ;
 		}
 		head = head->next;
-	} 
+	}
 	built_in_creat(i, str1, pipe);
 }
 
-char *hendl_export_var(char *str1)
+char	*hendl_export_var(char *str1)
 {
-	int k;
+	int	k;
 
 	k = 0;
-	if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_')
+	if (ft_isalpha(str1[k]) == 0 && str1[k] != '_')
 	{
 		return ("not a valid identifier");
 	}
@@ -60,17 +61,18 @@ char *hendl_export_var(char *str1)
 	{
 		if (str1[k] == '+' && str1[k + 1] == '\0')
 			break ;
-		if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_'  && ft_isdigit(str1[k]) == 0 )
+		if (ft_isalpha(str1[k]) == 0 && str1[k] != '_'
+			&& ft_isdigit(str1[k]) == 0)
 			return ("not a valid identifier");
 		k++;
 	}
 	return (str1);
 }
 
-void buildin_export_all(t_pipe *pipe, int fd)
+void	buildin_export_all(t_pipe *pipe, int fd)
 {
-	t_env *head;
-	
+	t_env	*head;
+
 	head = pipe->head_env;
 	while (head)
 	{
@@ -83,18 +85,18 @@ void buildin_export_all(t_pipe *pipe, int fd)
 			ft_printf(fd, "declare -x %s\n", head->key);
 		else
 			ft_printf(fd, "declare -x %s=\"%s\"\n", head->key, head->val);
-		if(head->next == NULL)
-			return;
+		if (head->next == NULL)
+			return ;
 		head = head->next;
 	}
 }
 
-int builtin_export(t_pipe *pipe, int fd)
-{  
-	int i;
-	int 	ret;
-	char **str1;
-	
+int	builtin_export(t_pipe *pipe, int fd)
+{
+	int		i;
+	int		ret;
+	char	**str1;
+
 	i = 1;
 	ret = 0;
 	if (!pipe->argv[1] && buildin_export_sort_by_alphabet(pipe))
@@ -102,16 +104,16 @@ int builtin_export(t_pipe *pipe, int fd)
 	while (pipe->argv[i])
 	{
 		str1 = ft_split_for_export(pipe->argv[i], '=');
-		if ((str1[0] == NULL && free_matrix(str1)) 
-			|| (ft_strcmp(hendl_export_var(str1[0]), "not a valid identifier") == 0
-			&& free_matrix(str1)))
+		if ((str1[0] == NULL && free_matrix(str1))
+			|| (ft_strcmp(hendl_export_var(str1[0]),
+					"not a valid identifier") == 0 && free_matrix(str1)))
 		{	
 			ret = 1;
 			ft_printf(2, "minishell: export: `%s' not a valid\
 identifier\n", pipe->argv[i++]);
 			continue ;
 		}
-		if (str1[0][ft_strlen(str1[0])-1] == '+')
+		if (str1[0][ft_strlen(str1[0]) - 1] == '+')
 			export_plus(i, str1, pipe, ft_strlen(str1[0]));
 		else
 			built_in_creat(i, str1, pipe);

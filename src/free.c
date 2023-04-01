@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 20:36:55 by adashyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	free_matrix(char **str)
@@ -17,49 +29,48 @@ int	free_matrix(char **str)
 	return (1);
 }
 
-void    free_redirect(t_redirect *redirect)
+void	free_redirect(t_redirect *redirect)
 {
-	t_redirect *prev;
+	t_redirect	*prev;
 
-    while (redirect)
-    {
+	while (redirect)
+	{
 		prev = redirect;
 		if (redirect->heredoc_fd != -1)
 			close(redirect->heredoc_fd);
-        free(redirect->f_name);
+		free(redirect->f_name);
 		redirect = redirect->next;
-        free(prev);
-    }
+		free(prev);
+	}
 }
 
-void    free_pipe(t_pipe *pipe)
+void	free_pipe(t_pipe *pipe)
 {
-	t_pipe *prev;
+	t_pipe	*prev;
 
-    while (pipe)
-    {
+	while (pipe)
+	{
 		prev = pipe;
 		if (pipe->fd_in != 0)
 			close(pipe->fd_in);
 		if (pipe->fd_out != 1)
 			close(pipe->fd_out);
-        free(pipe->content);
-        free(pipe->joined_argv);
-        free_matrix(pipe->argv);
-        free_redirect(pipe->red);
+		free(pipe->content);
+		free(pipe->joined_argv);
+		free_matrix(pipe->argv);
+		free_redirect(pipe->red);
 		pipe = pipe->next;
-        free(prev);
-    }
+		free(prev);
+	}
 }
 
 void	free_data(t_data *data)
 {
-	data->pipe_count = 0;   // 0
-	data->len_key_sum = 0;  // 0
-	data->len_val_sum = 0;  // 0
+	data->pipe_count = 0;
+	data->len_key_sum = 0;
+	data->len_val_sum = 0;
 	free(data->fd);
-	data->fd = NULL; // read-0 write-1  // NULL
+	data->fd = NULL;
 	free_pipe(data->pipe);
-	data->pipe = NULL;        // NULL
+	data->pipe = NULL;
 }
-

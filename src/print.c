@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/23 20:44:36 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 20:45:24 by adashyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <fcntl.h> 
 
-void print_env(t_data *data)
+void	print_env(t_data *data)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (data->env[i])
 	{
 		printf("data.env = %s\n", data->env[i]);
@@ -11,28 +25,26 @@ void print_env(t_data *data)
 	}	
 }
 
-void print_lists(t_pipe *red)
+void	print_lists(t_pipe *red)
 {
-	t_pipe *head;
+	t_pipe	*head;
 
 	head = red;
 	while (head)
-	{
-		//printf("content: %s\n", head->content);
 		head = head->next;
-	}
 }
 
-void printf_pipe(t_pipe *pipe)
+void	printf_pipe(t_pipe *pipe)
 {
-	t_pipe *pipe_in;
-	int i = 0;
+	t_pipe	*pipe_in;
+	int		i;
 
+	i = 0;
 	pipe_in = pipe;
 	while (pipe_in)
 	{
 		printf("⛩  pipe [%d]\n", i++);
-		int i = 0;
+		i = 0;
 		print_list(pipe_in->red);
 		printf("argv ***********************************\n");
 		while (pipe_in->argv && pipe_in->argv[i])
@@ -47,9 +59,9 @@ void printf_pipe(t_pipe *pipe)
 	}
 }
 
-void print_list(t_redirect *red)
+void	print_list(t_redirect *red)
 {
-	t_redirect *head;
+	t_redirect	*head;
 
 	printf("redirections ***********************************\n");
 	head = red;
@@ -65,15 +77,14 @@ void print_list(t_redirect *red)
 			printf("O_RDONLY\n");
 		if (head->flag == O_TRUNC)
 			printf("O_TRUNC\n");
-		
 		head = head->next;
 	}
 	printf("redirections ***********************************\n");
 }
 
-void print_list_head_env(t_data *data)
+void	print_list_head_env(t_data *data)
 {
-	t_env *head;
+	t_env	*head;
 
 	head = data->head_env;
 	while (head)
@@ -85,17 +96,17 @@ void print_list_head_env(t_data *data)
 	}
 }
 
-void print_list_head_env_pipe(t_pipe *pipe)
-{
-	printf("ok\n");
-	t_env *head;
+// void	print_list_head_env_pipe(t_pipe *pipe)
+// {
+// 	t_env	*head;
 
-	head = pipe->head_env;
-	while (head)
-	{
-		printf("head->key: %s\nhead->val: %s\n", head->key, head->val);
-		if (head->next == NULL)
-			return ;
-		head = head->next;
-	}
-}
+// 	printf("ok\n");
+// 	head = pipe->head_env;
+// 	while (head)
+// 	{
+// 		printf("head->key: %s\nhead->val: %s\n", head->key, head->val);
+// 		if (head->next == NULL)
+// 			return ;
+// 		head = head->next;
+// 	}
+// }

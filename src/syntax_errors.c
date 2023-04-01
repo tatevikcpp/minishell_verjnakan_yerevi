@@ -1,4 +1,15 @@
-// Harcer !!!
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_errors.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 20:38:59 by adashyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // 2 hat || error !!!!
 // "echo 14| ba" == 'echo 14| ba' => echo 14| ba: command not found
 // echo   &&>  abc &x     >>    amalia   < 121 ??????
@@ -21,13 +32,15 @@ int	is_behind_meta(char *str, char *start_str)
 }
 // TODO  cat <<>a
 // cat >>> a
+
 int	syntax_error(char *ptr, int i)
 {
-    while (ptr && ((ptr[i] >= 9 && ptr[i] <= 13) || ptr[i] == 32))
-        (i)++;
+	while (ptr && ((ptr[i] >= 9 && ptr[i] <= 13) || ptr[i] == 32))
+		(i)++;
 	if (!ptr[i] && is_behind_meta(&ptr[i], ptr))
 	{
-		ft_printf(2, "minishell: syntax error near unexpected token  `newline'\n");
+		ft_printf(2, "minishell: syntax error near unexpected \
+					token  `newline'\n");
 		return (1);
 	}
 	if (ptr && (ptr[i] == '>' && ptr[i + 1] == '>') && ptr[i + 1] == '\0')
@@ -40,10 +53,12 @@ int	syntax_error(char *ptr, int i)
 		ft_printf(2, "minishell: syntax error near unexpected token `<<'\n");
 		return (1);
 	}
-    if (ptr && (ptr[i] == '&' || ptr[i] == '|' || ptr[i] == ')' || ptr[i] == '(' || ptr[i] == ';'
-        || ptr[i] == '>' || ptr[i] == '<') && ptr[i + 1] == '\0')
+	if (ptr && (ptr[i] == '&' || ptr[i] == '|' || ptr[i] == ')'
+			|| ptr[i] == '(' || ptr[i] == ';'
+			|| ptr[i] == '>' || ptr[i] == '<') && ptr[i + 1] == '\0')
 	{
-        ft_printf(2, "minishell: syntax error near unexpected token `%c'\n", ptr[i]);
+		ft_printf(2, "minishell: syntax error near unexpected \
+			token `%c'\n", ptr[i]);
 		return (1);
 	}
 	return (0);
@@ -60,8 +75,8 @@ int	metachar_error(char *ptr)
 			i++;
 		while (!ft_strchr(METACHARACTER_ERROR, ptr[i]))
 			i++;
-		if ((ptr[i] && ptr[i] == '<' && ptr[i + 1] && ptr[i + 1] == '<') || (ptr[i] && ptr[i] == '>'
-			&& ptr[i + 1] && ptr[i + 1] == '>'))
+		if ((ptr[i] && ptr[i] == '<' && ptr[i + 1] && ptr[i + 1] == '<')
+			|| (ptr[i] && ptr[i] == '>' && ptr[i + 1] && ptr[i + 1] == '>'))
 		{
 			i += 2;
 			if (syntax_error(ptr, i) == 1)

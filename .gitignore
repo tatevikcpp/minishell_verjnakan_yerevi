@@ -1,5 +1,4 @@
-*.o
+*/*.o
+*/*.a
 .vscode
-./main.c
 .DS_Store
-text.txt

@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:39:15 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 09:47:18 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:13:19 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void heredoc_child(t_data *data, t_redirect *red, int fd)
+static void	heredoc_child(t_data *data, t_redirect *red, int fd)
 {
-	char       *s;
-	char       *tmp_free;
+	char	*s;
+	char	*tmp_free;
 
 	signal(SIGINT, SIG_DFL);
 	while (1)
@@ -26,7 +26,7 @@ static void heredoc_child(t_data *data, t_redirect *red, int fd)
 		if (s == NULL || ft_strcmp(s, red->f_name) == 0)
 		{
 			free(s);
-			s = NULL;                    
+			s = NULL;
 			break ;
 		}
 		tmp_free = s;
@@ -39,11 +39,11 @@ static void heredoc_child(t_data *data, t_redirect *red, int fd)
 	exit (0);
 }
 
-int heredoc(t_data *data, t_redirect *red)
+int	heredoc(t_data *data, t_redirect *red)
 {
-	int         pid;
-	int     	fd[2];
-	int         ret;
+	int	pid;
+	int	fd[12];
+	int	ret;
 
 	while (red)
 	{

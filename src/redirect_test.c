@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_test.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:04:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 20:06:00 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:24:31 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_redirect	*redirect_test(t_pipe *pipe)
 {
-	int 		i;
-	t_pipe 		*top;
+	int			i;
+	t_pipe		*top;
 	t_redirect	*head;
 
 	i = 0;
@@ -32,7 +32,7 @@ t_redirect	*redirect_test(t_pipe *pipe)
 		else
 			redirect_to_command(top, &i);
 		if (top->content[i] && !(is_redirect_in(top->content[i])
-			|| is_redirect_out(top->content[i])))
+				|| is_redirect_out(top->content[i])))
 			i++;
 	}
 	return (head);
@@ -61,26 +61,25 @@ int	redirect_f_name_flag(t_pipe *top, t_redirect **head, int *i)
 		(*i)++;
 	while (is_space(top->content[*i]))
 		(*i)++;
-	
 	start = *i;
 	while (top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
 	{
 		*i = for_space(top->content, '\'', *i);
 		*i = for_space(top->content, '"', *i);
-		if(top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
+		if (top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
 			(*i)++;
 	}
 	ft_t_redirect_add_back(head, new_t_redirect(
-		ft_substr(top->content, start, *i - start), flag));
+			ft_substr(top->content, start, *i - start), flag));
 	*i -= 1;
 	if (top->content[*i])
 		(*i)++;
 	return (0);
 }
 
-void	split_s__to_argv( t_data *data,  t_pipe *pipe)
+void	split_s__to_argv( t_data *data, t_pipe *pipe)
 {
-	char *for_free;
+	char	*for_free;
 
 	for_free = pipe->joined_argv;
 	if (pipe->joined_argv)
@@ -92,5 +91,3 @@ void	split_s__to_argv( t_data *data,  t_pipe *pipe)
 			pipe->argv[0] = ft_strdup("");
 	}
 }
-
-

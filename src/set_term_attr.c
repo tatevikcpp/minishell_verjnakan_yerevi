@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_term_attr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 08:47:08 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 08:54:26 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:25:52 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,10 @@ void	set_term_attr(int on_off)
 	{
 		termios_p.c_lflag &= ~ECHOCTL;
 		tcsetattr(0, 0, &termios_p);
-	// printf("%d\n", tcgetattr(0, &termios_p));
-
 	}
 	else if (on_off == 1)
 	{
 		termios_p.c_lflag |= ECHOCTL;
-	// printf("%d\n", tcgetattr(0, &termios_p));
-
 		tcsetattr(0, 0, &termios_p);
 	}
 }

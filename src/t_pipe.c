@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_pipe.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/01 20:30:37 by adashyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-t_pipe *new_t_pipe(char **tmp)
+t_pipe	*new_t_pipe(char **tmp)
 {
-   t_pipe *new_node;
+	t_pipe	*new_node;
 
-    new_node = malloc(sizeof(t_pipe));
-    new_node->argv  = tmp;
-    new_node->next = NULL;
-    return (new_node);
+	new_node = malloc(sizeof(t_pipe));
+	new_node->argv = tmp;
+	new_node->next = NULL;
+	return (new_node);
 }
 
 t_pipe	*ft_t_pipe_last(t_pipe *lst)

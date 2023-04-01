@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tumolabs <tumolabs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 19:11:18 by tumolabs          #+#    #+#             */
-/*   Updated: 2023/01/15 10:14:40 by tumolabs         ###   ########.fr       */
+/*   Updated: 2023/04/01 20:15:00 by adashyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,4 @@ bool	is_redirect_out(char c)
 bool	is_append_in(char c, char d)
 {
 	return ((c == '<' && d == '<'));
-}
-
-bool	is_append_out(char c, char d)
-{
-	return ((c == '>' && d == '>'));
 }
