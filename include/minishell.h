@@ -16,14 +16,20 @@
 # include <readline/history.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+
+
 /* ------------------------ */
 
 /* ----- Constants ----- */
 # define HEREDOC 5
 # define METACHARACTER "|&;()<> \n\t"
 # define METACHARACTER_ERROR "|&;)(<>"
-# define SPACE " \n\t"
+# define SPACES " \n\t"
 /* --------------------- */
+
+extern int g_signal_status;
 
 /* ----- Structures ----- */
 typedef struct s_redirect
@@ -175,7 +181,7 @@ int			lsh_launch(t_data *data, t_pipe *pipe);
 void		infile(t_redirect *red, t_pipe *pipe);
 void		outfile(t_redirect *red, t_pipe *pipe);
 // void 	heredoc(t_redirect *red);
-void 		heredoc(t_data *data, t_redirect *red);
+int 		heredoc(t_data *data, t_redirect *red);
 void		append_red(t_redirect *red,  t_pipe *pipe);
 void		choose_redirect(t_pipe *pipe, t_redirect *red);
 /* ------------------------------ */
@@ -194,12 +200,12 @@ int			there_is_builtin(t_data *data);
 int			ther_are_equal(char *ptr);
 
 /* ------ export ------------ */ /* builtin_export.c */
-void		builtin_export(t_data *data, t_pipe *pipe);
+void		builtin_export(t_pipe *pipe);
 /* ----- export utils ------ */
 char		*hendl_export_var(char *str1);
-void		buildin_export_all(t_data *data/* , char *ptr */);
-void		buildin_export_all_by_alphabet(t_data *data);
-void		buildin_export_all_by_alphabet_inner(t_data *data);
+void		buildin_export_all(t_pipe *pipe);
+void		buildin_export_all_by_alphabet(t_pipe *pipe);
+void		buildin_export_all_by_alphabet_inner(t_pipe *pipe);
 /* ------------------------- */
 /* -------------------------------------------------- */
 
@@ -229,15 +235,15 @@ int			ft_pwd(void);
 /* ---------------------------- */
 
 /* --------- env ----------------------------------- */ 
-void		buildin_env_all(t_data *data); /* builtin_export.c */
+void		buildin_env_all(t_pipe *pipe);
 void		send_env(t_data *data); /* redirect.c */
 /* ------------------------------------------------- */
 
 /* ----- unset ------------- */ /* builtin_export.c */
 // void unset_buildin(t_data *data, char *ptr);
 /* -------- unset utils -------- */
-int			ft_list_remove_if(t_data *data,/*  void *data_ref,  */int (*cmp)(),/*  char *ptr */t_pipe *pipe);
-void		remove_else_inner(t_data *data,int (*ft_strcmp)(), char **str1);
+int			ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)());
+void		remove_else_inner(t_pipe *pipe, int (*ft_strcmp)(), char **str1);
 void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 /* ------------------------------ */
 /* ------------------------------------------------ */
@@ -253,5 +259,8 @@ int		add_exit_status_in_env(t_data *data, int status);
 
 
 void pipe_in_out(int i, t_data *data, t_pipe *pipe);
+
+
+void	set_term_attr(int on_off);
 
 #endif

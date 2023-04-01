@@ -17,9 +17,8 @@ int check_symbol(char *str)
     return (0);
 }
 
-void    ft_echo(char **ptr)
+void    ft_echo(char **ptr, int fd)
 {
-    // printf("xdgdsg\n");
     int     i;
     int     flag;
 
@@ -27,19 +26,20 @@ void    ft_echo(char **ptr)
     flag = 0;
     while(ptr[i])
     {
-        if(check_symbol(ptr[i]) == 0)
-        {
-            write(1, ptr[i], ft_strlen(ptr[i]));
-            i++;
-            if(ptr[i] && ptr[i + 1] == '\0')
-                write(1, " ", 1);
-        }
-        else
+        if(check_symbol(ptr[i]) == 1 && i <= 1 )
         {
             flag = 1;
             i++;
         }
+        else
+        {
+            
+            write(fd, ptr[i], ft_strlen(ptr[i]));
+            i++;
+            if(ptr[i] && ptr[i + 1] == '\0')
+                write(fd, " ", 1);
+        }
     }
     if (flag == 0)
-        write(1, "\n", 1);
+        write(fd, "\n", 1);
 }

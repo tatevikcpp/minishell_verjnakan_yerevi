@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-extern int exit_status;
 
 char *access_path(t_data *data, char **args)
 {
@@ -57,7 +56,7 @@ int execute(t_data *data)
     int res;
 
     if (data->pipe_count == 1 && there_is_builtin(data) == 1)
-        return (choose_builtin(/* ptr, */ data->pipe, data));
+        return (choose_builtin(data->pipe, data));
     else
     {
         res = pipe_exec(data);

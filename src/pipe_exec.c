@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:29:33 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 19:55:01 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 10:30:55 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void child(t_data *data, t_pipe *tmp, int i)
 {
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
 	pipe_in_out(i, data, tmp);		
 }
 
@@ -22,14 +24,31 @@ static int ft_waitpid(t_data *data)
 	int		i;
 	int		ret;
 	
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 	i = -1;
 	while (++i < data->pipe_count)
 		waitpid(-1, &ret, 0);
 	if (WIFSIGNALED(ret))
-		return (WTERMSIG(ret) + 127);  // TODO cat | ls   exit code
-	if (WIFEXITED(ret)/*printf("%d\n", WEXITSTATUS(ret))*/)
+	{
+		if (WTERMSIG(ret) == SIGPIPE)
+			return (0);
+		if (WTERMSIG(ret) == SIGQUIT)
+			ft_printf(1, "Quit: 3");
+		ft_printf(1, "\n");
+		return (WTERMSIG(ret) + 128);  // TODO cat | ls   exit code
+	}
+	if (WIFEXITED(ret))
 		return (WEXITSTATUS(ret));
 	return (0);
+}
+
+void close_fds(t_data *data)
+{
+	close(data->pipe_fd);
+	data->pipe_fd = dup(data->fd1[0]);
+	close(data->fd1[0]);
+	close(data->fd1[1]);
 }
 
 int pipe_exec(t_data *data)
@@ -44,19 +63,18 @@ int pipe_exec(t_data *data)
 	i = 0;
 	while (tmp)
 	{
-		pipe(data->fd1);
+		if (pipe(data->fd1))
+			return (perror("minishell: fork:"), errno);
 		pid = fork();
 		if (pid == 0)
 			first_pid = pid;
 		if (pid == -1 && ft_printf(2, "minishell: fork: %s\n", strerror(errno)))
-			return (kill(first_pid, SIGKILL), 1);
+			return (kill(first_pid, SIGKILL), errno);
 		if (pid == 0)
-			child(data, tmp, i++);
-		close(data->pipe_fd);
-		data->pipe_fd = dup(data->fd1[0]);
-		close(data->fd1[0]);
-		close(data->fd1[1]);
+			child(data, tmp, i);
+		close_fds(data);
 		tmp = tmp->next;
+		i++;
 	}
 	return (close(data->pipe_fd), ft_waitpid(data));
 }

@@ -6,13 +6,11 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 20:17:25 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/26 20:49:08 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 09:40:22 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int exit_status;
 
 int pipe_error(char *ptr)
 {
@@ -24,7 +22,6 @@ int pipe_error(char *ptr)
     if (ptr[i] && ptr[i] == '|')
     {
         ft_printf(2, "minishell: syntax error near unexpected token `|'");
-        exit_status = 258;
         return (1);
     }
     while (ptr && ptr[i])
@@ -34,7 +31,6 @@ int pipe_error(char *ptr)
         if (ptr && ptr[i] && ptr[i] == '|')
         {
             ft_printf(2, "minishell: syntax error near unexpected token `|'");
-            exit_status = 258;
             return (1);
         }
         i++;

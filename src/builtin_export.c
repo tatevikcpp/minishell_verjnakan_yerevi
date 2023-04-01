@@ -1,30 +1,39 @@
 #include "minishell.h"
 
-int choose_builtin(t_pipe *pipe, t_data *data)
+int strcmp_env(char *str, char **argv) // env-i pahy poxel
 {
-    if (ft_strcmp("export", pipe->argv[0]) == 0 && !pipe->argv[1])
+    int i;
+    int flag;
+
+    i = 0;
+    flag = 0;
+    while (argv && argv[i])
     {
-        printf("export show:\n");
-        buildin_export_all_by_alphabet(data);
-        return(buildin_export_all(data), 0);
-    }   
-    else if (ft_strcmp("export", pipe->argv[0]) == 0)
-    {
-        printf("export work:\n");
-       return(builtin_export(data, pipe), 0);
+        if (ft_strcmp(str, argv[i]) == 0)
+            flag++;
+        i++;
     }
+    if (flag == i)
+        return (0);
+    return (1);
+}
+
+int choose_builtin(t_pipe *pipe , t_data *data)
+{
+    if (ft_strcmp("export", pipe->argv[0]) == 0)
+        return(builtin_export(pipe), 0);
     else if (ft_strcmp("echo", pipe->argv[0]) == 0)
        return(ft_echo(pipe->argv), 0);
     else if (ft_strcmp("cd", pipe->argv[0]) == 0)
-       return(ft_cd(pipe->argv, data));
+       return(ft_cd(pipe->argv , data));
     else if (ft_strcmp("exit", pipe->argv[0]) == 0)
-        ft_exit(pipe->argv/* , data */);
+        ft_exit(pipe->argv);
     else if (ft_strcmp("pwd", pipe->argv[0]) == 0)
        return(ft_pwd());
-    else if (ft_strcmp("env", pipe->argv[0]) == 0 && !pipe->argv[1]) 
-       return(buildin_env_all(data), 0);
+    else if (strcmp_env("env", pipe->argv) == 0)
+       return(buildin_env_all(pipe), 0);
     else if (ft_strcmp("unset", pipe->argv[0]) == 0)
-        return(ft_list_remove_if(data, ft_strcmp, pipe), 0);
+        return(ft_list_remove_if(pipe, ft_strcmp), 0);
     return (0);
 }
 
@@ -42,49 +51,93 @@ int ther_are_equal(char *ptr)
     return (0);
 }
 
-void builtin_export(t_data *data, t_pipe *pipe)
-{  
-    int i;
-    char **str1;
+void export_plus(int *i, char **str1, t_pipe *pipe, int len)
+{
+    char *str=ft_strdup("");
     t_env *head;
     t_env *new; 
 
+    str = ft_substr(str1[0], 0, len-1);
+    head = pipe->head_env;
+    while (head)
+    {            
+        if (ft_strcmp(str, head->key) == 0)
+        {
+            head->val = ft_strjoin(head->val, str1[1]);
+            break;
+        } 
+        if (head->next == NULL && ther_are_equal(pipe->argv[*i])==1)
+        {   
+            new = new_t_env(str,"\1");
+            ft_t_env_add_back(&head, new);
+            break;
+        }                  
+        if (head->next == NULL)
+        {
+            new = new_t_env(str, str1[1]);
+            ft_t_env_add_back(&head, new);
+            break;
+        }            
+        head = head->next;
+    } 
+}
+
+void built_in_creat(int *i, char **str1, t_pipe *pipe)
+{
+    t_env *head;
+    t_env *new; 
+
+    head = pipe->head_env;
+    while (head)
+    {            
+        if (ft_strcmp(str1[0], head->key) == 0)
+        {
+            head->val = str1[1];
+            break;
+        } 
+        if (head->next == NULL && ther_are_equal(pipe->argv[*i])==1)
+        {   
+            new = new_t_env(str1[0],"\1");
+            ft_t_env_add_back(&head, new);
+            break;
+        }                  
+        if (head->next == NULL)
+        {
+            new = new_t_env(str1[0], str1[1]);
+            ft_t_env_add_back(&head, new);
+            break;
+        }            
+        head = head->next;
+    } 
+
+}
+
+void builtin_export(t_pipe *pipe)
+{  
+    int i;
+    char **str1;
+    // char *str=ft_strdup("");
+    
     i = 1;
+    if (!pipe->argv[1])
+    {
+        buildin_export_all_by_alphabet(pipe);
+        buildin_export_all(pipe);
+    }
     while (pipe->argv[i])
     { 
-        ther_are_equal(pipe->argv[i]);        
         str1 = ft_split(pipe->argv[i], '=');
-       
-        head = data->head_env;
-        if (ft_strcmp(hendl_export_var(str1[0]), "not a valid identifier") == 0)
-        {
-            printf(" %s not a valid identifier\n", pipe->argv[i]);
-            return ;
-        }  
-        while (head)
-        {            
-            if (ft_strcmp(str1[0], head->key) == 0)
-            {
-                head->val = str1[1];
-                break;
-            } 
-            if (head->next == NULL && ther_are_equal(pipe->argv[i])==1)
-            {   
-                new = new_t_env(str1[0],"\1");
-                ft_t_env_add_back(&head, new);
-                break;
-            }                  
-            if (head->next == NULL)
-            {
-                new = new_t_env(str1[0], str1[1]);
-                ft_t_env_add_back(&head, new);
-                break;
-            }            
-            head = head->next;
-        }            
+        int len = ft_strlen(str1[0]);
+        if ( str1[0][len-1] == '+' )
+            export_plus(&i, str1, pipe, len);
+        else if (ft_strcmp(hendl_export_var(str1[0]), "not a valid identifier") == 0)
+            printf("minishell:  %s `%s' not a valid identifier\n", pipe->argv[0], pipe->argv[i]);
+        else
+            built_in_creat(&i, str1, pipe);
         i++;
     }
 }
+
 
 char *hendl_export_var(char *str1)
 {
@@ -98,19 +151,18 @@ char *hendl_export_var(char *str1)
     k++;
     while (str1[k])
     {
-        if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_' 
-            && ft_isdigit(str1[k]) == 0 )
+        if (ft_isalpha(str1[k]) == 0 && str1[k] !=  '_'  && ft_isdigit(str1[k]) == 0 )
             return ("not a valid identifier");
         k++;
     }
     return (str1);
 }
 
-void buildin_export_all(t_data *data)
+void buildin_export_all(t_pipe *pipe)
 {
 	t_env *head;
     
-    head = data->head_env;
+    head = pipe->head_env;
     while (head)
     {
         if (head->val == NULL)
@@ -123,14 +175,14 @@ void buildin_export_all(t_data *data)
     }
 }
 
-void buildin_export_all_by_alphabet(t_data *data)
+void buildin_export_all_by_alphabet(t_pipe *pipe)
 {
     t_env *head;
     int count;
     int i;
     count = 0;
     i = 0;    
-    head = data->head_env;
+    head = pipe->head_env;
     while (head)
     {        
         count++;
@@ -138,38 +190,38 @@ void buildin_export_all_by_alphabet(t_data *data)
     }    
     while (i < count)
     {      
-        buildin_export_all_by_alphabet_inner(data); 
+        buildin_export_all_by_alphabet_inner(pipe); 
         i++;
     }
 }
 
-void buildin_export_all_by_alphabet_inner(t_data *data)
+void buildin_export_all_by_alphabet_inner(t_pipe *pipe) 
 {
-    t_env   *head1;
+    t_env   *head;
     char    *tmp;
     char    *tmp_val;
    
-    head1 = data->head_env;   
-    while (head1->next)
+    head = pipe->head_env;   
+    while (head->next)
     {
-        if (head1->key[0] > head1->next->key[0])
+        if (head->key[0] > head->next->key[0])
         {
-            tmp_val = head1->val;
-            tmp = head1->key;
-            head1->val = head1->next->val;
-            head1->key = head1->next->key;
-            head1->next->val = tmp_val;
-            head1->next->key = tmp;                
+            tmp_val = head->val;
+            tmp = head->key;
+            head->val = head->next->val;
+            head->key = head->next->key;
+            head->next->val = tmp_val;
+            head->next->key = tmp;                
         }            
-        head1 = head1->next;
+        head = head->next;
     }
 }
 
-void buildin_env_all(t_data *data)
+void buildin_env_all(t_pipe *pipe)
 {
 	t_env *head;
    
-	head = data->head_env;
+    head = pipe->head_env;
 	while (head)
 	{
         if (head->key && head->val)
@@ -180,32 +232,7 @@ void buildin_env_all(t_data *data)
 	}
 }
 
-
-void ft_get_remove_val(t_data *data,int (*ft_strcmp)(), char *str)
-{
-    t_env	*head;
-    char *line1;
-    char *line;
-    int len;
-
-    line1 = NULL;
-    len = ft_strlen(str);
-    line = malloc(sizeof(char) * (len + 1));
-    line = ft_substr(str,1,len-1);
-    head = data->head_env;
-    while (head)
-    {               
-        if (ft_strcmp(line, head->key) == 0)
-        {
-            line1= head->val;                   
-            break;
-        }                
-        head = head->next;
-    }     
-    remove_if_inner(data, ft_strcmp, line1); 
-}
-
-int ft_list_remove_if(t_data *data,int (*ft_strcmp)(),t_pipe *pipe)
+int ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)())
 {    
     char **str1;
     int i;
@@ -214,33 +241,21 @@ int ft_list_remove_if(t_data *data,int (*ft_strcmp)(),t_pipe *pipe)
     while (pipe->argv[i])
     {
         str1 = ft_split(pipe->argv[i], '=');
-        if (str1[0][0] == '$')
-        {
-            printf("pipe->argv[i]---%s\n",pipe->argv[i]);
-            printf("str1[0]%s\n", str1[0]);
-            printf("str1[1]%s\n", str1[1]);
-            printf("HI\n");
-            ft_get_remove_val(data,ft_strcmp,str1[0]);            
-        }
-        else
-        {
-            printf("pipe->argv[i]---%s\n",pipe->argv[i]);
-            printf("str1[0]%s\n", str1[0]);
-            printf("str1[1]%s\n", str1[1]);
-            remove_else_inner(data, ft_strcmp, str1);       
-        }
+        if (ft_strcmp(hendl_export_var(str1[0]), "not a valid identifier") == 0)
+            printf("minishell:  %s `%s' not a valid identifier\n", pipe->argv[0], pipe->argv[i]);
+        remove_else_inner(pipe, ft_strcmp, str1);       
         i++;
     }
     return (0);
 }
 
-void remove_else_inner(t_data *data,int (*ft_strcmp)(), char **str1)
+void remove_else_inner(t_pipe *pipe, int (*ft_strcmp)(), char **str1)
 {
     t_env   *head;
     t_env   *new;
     t_env   *tmp;
 
-    head = data->head_env;
+    head = pipe->head_env;
     if (head == NULL)
         return ;
     if (head && ft_strcmp(head->key, str1[0])==0)
@@ -253,34 +268,6 @@ void remove_else_inner(t_data *data,int (*ft_strcmp)(), char **str1)
     while (new && new->next)
     {
         if (ft_strcmp(new->next->key,str1[0]) == 0)
-        {
-            tmp = new->next;
-            new->next = tmp->next;
-                free(tmp);	
-        }
-        new = new->next;
-    }
-}
-
-void remove_if_inner(t_data *data,int (*ft_strcmp)(), char *str)
-{
-    t_env	*head;
-    t_env	*new;
-    t_env	*tmp;
-
-    head = data->head_env;
-    if (head == NULL)
-        return ;
-    if (head && ft_strcmp(head->key, str)==0)
-    {
-        new = head;
-        head= head->next;
-        free(new);
-    }
-    new = head;
-    while (new && new->next)
-    {
-        if (ft_strcmp(new->next->key, str)==0)
         {
             tmp = new->next;
             new->next = tmp->next;

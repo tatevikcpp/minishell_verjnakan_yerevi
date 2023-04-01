@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:39:15 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 20:57:47 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 09:47:18 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,54 @@
 
 static void heredoc_child(t_data *data, t_redirect *red, int fd)
 {
-    char       *s;
-    char       *tmp_free;
+	char       *s;
+	char       *tmp_free;
 
-    while (1)
-    {
-        s = readline("heredoc>");
-        if (s == NULL || ft_strcmp(s, red->f_name) == 0)
-        {
-            free(s);
-            s = NULL;                    
-            break ;
-        }
-        tmp_free = s;
-        s = hendl_doloar_comand(data, s);
-        free(tmp_free);
-        write(fd, s, ft_strlen(s));
-        write(fd, "\n", 1);
-    }
-    close(fd);
-    exit (0);
+	signal(SIGINT, SIG_DFL);
+	while (1)
+	{
+		set_term_attr(0);
+		s = readline("heredoc>");
+		set_term_attr(1);
+		if (s == NULL || ft_strcmp(s, red->f_name) == 0)
+		{
+			free(s);
+			s = NULL;                    
+			break ;
+		}
+		tmp_free = s;
+		s = hendl_doloar_comand(data, s);
+		free(tmp_free);
+		write(fd, s, ft_strlen(s));
+		write(fd, "\n", 1);
+	}
+	close(fd);
+	exit (0);
 }
 
-void heredoc(t_data *data, t_redirect *red)
+int heredoc(t_data *data, t_redirect *red)
 {
-    int         pid;
-    int        fd[2];
+	int         pid;
+	int     	fd[2];
+	int         ret;
 
-    while (red)
-    {
-        if (red->flag == HEREDOC)
-        {
-            if (pipe(fd) == -1)
-                exit(1);
-            pid = fork();
-            if (pid == 0)
-            {
-                heredoc_child(data, red, fd[1]);
-            }
-            red->heredoc_fd = fd[0];
-            close(fd[1]);
-            waitpid(pid, 0, 0);
-        }
-        red = red->next;
-    }
+	while (red)
+	{
+		if (red->flag == HEREDOC)
+		{
+			if (pipe(fd) == -1)
+				exit(1);
+			pid = fork();
+			if (pid == 0)
+				heredoc_child(data, red, fd[1]);
+			red->heredoc_fd = fd[0];
+			close(fd[1]);
+			signal(SIGINT, SIG_IGN);
+			waitpid(pid, &ret, 0);
+			if (WIFSIGNALED(ret))
+				return (ft_printf(1, "\n"), 1);
+		}
+		red = red->next;
+	}
+	return (0);
 }

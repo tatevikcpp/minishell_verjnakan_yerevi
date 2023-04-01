@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/03/31 21:14:57 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 10:39:30 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,14 @@ int parsing(t_data *data, char *ptr)  //return
 	{
 		tmp1->red = redirect_test(tmp1); // sxal ls>a>b
 		expand_redirect_dollar(data, tmp1->red);
-		heredoc(data, tmp1->red);
+		if (heredoc(data, tmp1->red) != 0)
+			return (1);
 		if (open_files_for_redirect(tmp1) != 0)
 			return (1);
 		split_s__to_argv(data, tmp1); // *(42) => 1
 		tmp1 = tmp1->next;
 	}
 	printf_pipe(data->pipe);
-	printf("pipe count: %d\n", data->pipe_count);
+	// printf("pipe count: %d\n", data->pipe_count);
 	return (0);
 }
