@@ -195,24 +195,24 @@ int			pipe_error(char *ptr);
 /* ------------------------------------------------------------------------------------ */
 
 /* ------------------------ Built-ins ------------------------------------------------- */
-int			choose_builtin(/* char *ptr , */ t_pipe *pipe, t_data *data);
-int			there_is_builtin(t_data *data);
+int			choose_builtin(/* char *ptr , */ t_pipe *pipe, t_data *data, int fd);
+int 		there_is_builtin(t_pipe *pipe);
 int			ther_are_equal(char *ptr);
 
 /* ------ export ------------ */ /* builtin_export.c */
-void		builtin_export(t_pipe *pipe);
+int			builtin_export(t_pipe *pipe, int fd);
 /* ----- export utils ------ */
-char		*hendl_export_var(char *str1);
-void		buildin_export_all(t_pipe *pipe);
+// char		*hendl_export_var(char *str1);
+void		buildin_export_all(t_pipe *pipe, int fd);
 void		buildin_export_all_by_alphabet(t_pipe *pipe);
-void		buildin_export_all_by_alphabet_inner(t_pipe *pipe);
+// void		buildin_export_all_by_alphabet_inner(t_pipe *pipe);
 /* ------------------------- */
 /* -------------------------------------------------- */
 
 /* ------ echo ------------- */ /* echo.c */
-void		ft_echo(char **ptr);
+void		ft_echo(char **ptr, int fd);
 /* ----- echo utils -------- */
-int			check_symbol(char *str);
+int			check_symbol(char **str, int *k);
 /* -------------------------- */
 /* -------------------------------------- */
 
@@ -221,7 +221,7 @@ int			ft_cd(char **argv, t_data *data);
 /* ------------------------------------- */
 
 /* ---------- exit ----------- */ /* exit.c */
-int			ft_exit(char **str/* , t_data *data */);
+int			ft_exit(char **str, t_data *data);
 /* ----- exit utils ----- */
 int			is_digit(char *str);
 int			is_char(char *str);
@@ -231,11 +231,11 @@ int			neg_to_pos(long double nbr);
 /* ---------------------------------------- */
 
 /* ----- pwd ------ */ /* pwd.c */
-int			ft_pwd(void);
+int			ft_pwd(int fd);
 /* ---------------------------- */
 
 /* --------- env ----------------------------------- */ 
-void		buildin_env_all(t_pipe *pipe);
+void		buildin_env_all(t_pipe *pipe, int fd);
 void		send_env(t_data *data); /* redirect.c */
 /* ------------------------------------------------- */
 
@@ -243,14 +243,14 @@ void		send_env(t_data *data); /* redirect.c */
 // void unset_buildin(t_data *data, char *ptr);
 /* -------- unset utils -------- */
 int			ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)());
-void		remove_else_inner(t_pipe *pipe, int (*ft_strcmp)(), char **str1);
-void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
+// void		remove_else_inner(t_pipe *pipe, int (*ft_strcmp)(), char **str1);
+// void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 /* ------------------------------ */
 /* ------------------------------------------------ */
 /* ----------------------------------------------------------------------------------------- */
 
 void	free_data(t_data *data);
-void	free_matrix(char **str);
+int		free_matrix(char **str);
 char	*ft_strjon_free_arg1(char *s1, char const *s2);
 char	*ft_strjon_free_arg2(char const *s1, char *s2);
 char	*ft_strjon_free_both(char *s1, char *s2);
@@ -262,5 +262,13 @@ void pipe_in_out(int i, t_data *data, t_pipe *pipe);
 
 
 void	set_term_attr(int on_off);
+
+
+char	**ft_split_for_export(char const	*s, char c);
+
+
+char 	*hendl_export_var(char *str1);
+
+int buildin_export_sort_by_alphabet(t_pipe *pipe);
 
 #endif

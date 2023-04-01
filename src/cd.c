@@ -4,12 +4,16 @@ int ft_cd(char **argv , t_data *data)
 {
     if (!argv[1])
     {
-        printf("home\n");
-        chdir(ft_get_value("HOME", data));
+        if (chdir(ft_get_value("HOME", data)) != 0)
+        {
+            ft_printf(2, "minishell:  %s: %s: No such file or directory\n", argv[0], argv[1]);
+            return (1);
+        }
     }
     else if (chdir(argv[1]) != 0)
-        printf("minishell:  %s: %s: No such file or directory\n", argv[0], argv[1]); //ft_printf ? perror ?
-    // else
-    //     chdir(argv[1]);
+    {
+        ft_printf(2, "minishell:  %s: %s: No such file or directory\n", argv[0], argv[1]);
+        return (1);
+    }
     return (0);
 }

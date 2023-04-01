@@ -54,7 +54,7 @@ int	metachar_error(char *ptr)
 	int	i;
 
 	i = 0;
-	while (ptr[i] && ptr[i] != '\0')
+	while (ptr[i] != '\0')
 	{
 		while (ptr && (ptr[i] >= 9 && ptr[i] <= 13) && ptr[i] == 32)
 			i++;
@@ -73,7 +73,8 @@ int	metachar_error(char *ptr)
 			if (syntax_error(ptr, i) == 1)
 				return (1);
 		}
-		i++;
+		if (ptr[i])
+			i++;
 	}
 	return (0);
 }

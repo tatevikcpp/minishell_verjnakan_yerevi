@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:29:33 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 10:30:55 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/01 19:18:26 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void child(t_data *data, t_pipe *tmp, int i)
 {
-	// signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	pipe_in_out(i, data, tmp);		
 }
 
@@ -24,8 +24,8 @@ static int ft_waitpid(t_data *data)
 	int		i;
 	int		ret;
 	
-	// signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	i = -1;
 	while (++i < data->pipe_count)
 		waitpid(-1, &ret, 0);
@@ -45,8 +45,13 @@ static int ft_waitpid(t_data *data)
 
 void close_fds(t_data *data)
 {
+	// char	buff[100];
+	
 	close(data->pipe_fd);
 	data->pipe_fd = dup(data->fd1[0]);
+	// buff[read(data->pipe_fd, buff, 99)] = 0;
+	// printf("buff: %s\n", buff);
+	// 	exit(0);
 	close(data->fd1[0]);
 	close(data->fd1[1]);
 }
@@ -57,13 +62,14 @@ int pipe_exec(t_data *data)
 	pid_t pid;
 	pid_t first_pid;
 	t_pipe *tmp;
+
 	
 	data->pipe_fd = dup(0);
 	tmp = data->pipe;
 	i = 0;
 	while (tmp)
 	{
-		if (pipe(data->fd1))
+		if (pipe(data->fd1) == -1)
 			return (perror("minishell: fork:"), errno);
 		pid = fork();
 		if (pid == 0)
@@ -72,6 +78,7 @@ int pipe_exec(t_data *data)
 			return (kill(first_pid, SIGKILL), errno);
 		if (pid == 0)
 			child(data, tmp, i);
+		// sleep(1);
 		close_fds(data);
 		tmp = tmp->next;
 		i++;

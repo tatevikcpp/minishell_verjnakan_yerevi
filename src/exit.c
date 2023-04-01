@@ -1,80 +1,69 @@
 #include "minishell.h"
 
-// nayel globalic heto
-extern int exit_status;
+// 9223372036854775807
 
 int	is_digit(char *str)
 {
     int i = 0;
     while (str[i] != '\0')
     {
-        if (str[i] >= '0' && str[i] <= '9')
-           return (2);
+        if (!(str[i] >= '0' && str[i] <= '9'))
+           return (1);
         i++;
     }
     return (0);
 }
+// exit +0000000009223372036854775807
 
-int	is_char(char *str)
+int is_valid(char *str, int *num_metka)
 {
-    int i;
+	int i;
+	int	num_digit;
+	int	is_minus;
 
-    i = 0;
-    while (str[i])
-    {
-        if (ft_isalpha(str[i]))
-            return (2);
-        i++;
-    }
-    return (0);
+	i = 0;
+	is_minus = 0;
+	num_digit = 0;
+	if (str[i] == '+' || (str[i] == '-' && ++is_minus))
+		++i;
+	if (is_digit(str + i) != 0)
+		return (1);
+	while (str[i] == '0')
+		++i;
+	num_digit = i;
+	while (str[i])
+		++i;
+	if ((i - num_digit) > 19)
+		return (1);
+	if ((i - num_digit) == 19)
+		if ((is_minus && ft_strcmp(str + num_digit, "9223372036854775808") > 0)
+			|| (!is_minus && ft_strcmp(str + num_digit,
+			"9223372036854775807") > 0))
+			return (1);
+	*num_metka = num_digit;
+	return (0);
 }
 
-void	max_int(char *str/* , t_data *data */)
+int	ft_exit(char **str, t_data *data)
 {
-	if (ft_strcmp(str, "9223372036854775807") > 0)
-	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(str, 2);
-		perror(": ");
-		//exit status = 255;
-		exit(255);//exit status
-	}
-}
+	int num_metka;
 
-int	neg_to_pos(long double nbr)
-{
-	if (nbr < 0)
-		nbr *= -1;
-	return (nbr);
-}
-
-int	ft_exit(char **str/* , t_data *data */)
-{
 	if (!str[1])
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(0);//exit status
+		exit(ft_atoi(get_dolar_val(data, "?")));
 	}
-	else if (is_digit(str[1]) == 0 && !str[2])
+	if (is_valid(str[1], &num_metka) != 0)
 	{
-		max_int(str[1]/* , data */);
-		if (str[1][0] != '-' || str[1][0] == '+')
-			printf("exit_status 255");
-			//exit_status = ft_atoi(str[1]) % 256
-		else
-			printf("exit status ?");
-			//exit_status = 256 - neg_to_pos(ft_atoi(str[1]) % 256);
+		ft_printf(2, "exit\nminisehll: exit: %s: numeric argument\
+required\n", str[1]);
+		exit(255);;
 	}
-	else if (str[2])
+	if (str[2])
 	{
-		perror("minishell: ");
-		//exit_status = 1;
-		return(0);
+		ft_printf(2, "minishell: exit: %s: too many arguments", str[2]);
+		return(1);
 	}
-	max_int(str[1]/* , data */);
-	//exit_status;
-	exit(255);
-   
+	exit(ft_atoi(str[1] + num_metka));
     return (0);
 }

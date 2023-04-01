@@ -1,17 +1,17 @@
 #include "minishell.h"
 
 
-int there_is_builtin(t_data *data)
+int there_is_builtin(t_pipe *pipe)
 {
 	int i;
 	char *build_in[] = {"cd", "echo", "pwd", "exit", "env", "unset", "export", NULL};
 
 	i = 0;
-	if (data->pipe->argv && data->pipe->argv[0])
+	if (pipe->argv && pipe->argv[0])
 	{
 		while (build_in[i])
 		{
-			if (ft_strcmp(data->pipe->argv[0], build_in[i]) == 0)
+			if (ft_strcmp(pipe->argv[0], build_in[i]) == 0)
 				return (1);
 			i++;
 		}

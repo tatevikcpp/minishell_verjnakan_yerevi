@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	free_matrix(char **str)
+int	free_matrix(char **str)
 {
 	int	i;
 
@@ -14,6 +14,7 @@ void	free_matrix(char **str)
 		}
 	}
 	free(str);
+	return (1);
 }
 
 void    free_redirect(t_redirect *redirect)
