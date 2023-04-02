@@ -38,7 +38,6 @@ endif
 %.o: %.c  ${HEADER} Makefile
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# all: readline $(NAME) 
 all: $(NAME) 
 	
 $(NAME): $(OBJS) $(LINKERLIBFT) $(LINKERLIBFTPRINTF)

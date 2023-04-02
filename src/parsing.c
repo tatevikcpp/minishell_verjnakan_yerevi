@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 10:59:25 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:20:52 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,16 @@ int	open_files_for_redirect(t_pipe *pipe)
 
 void	expand_redirect_dollar(t_data *data, t_redirect *tmp)
 {
+	char	*tmp_free;
+
 	while (tmp)
 	{
 		if (tmp->flag != HEREDOC)
+		{
+			tmp_free = tmp->f_name;
 			tmp->f_name = hendl_doloar_comand(data, tmp->f_name);
+			free(tmp_free);
+		}
 		tmp = tmp->next;
 	}
 }
@@ -146,8 +152,5 @@ int	parsing(t_data *data, char *ptr)
 		split_s__to_argv(data, tmp1);
 		tmp1 = tmp1->next;
 	}
-	printf_pipe(data->pipe);
-	printf("pipe count %d\n", data->pipe_count);
-	printf("\n\n\n\n\n\n\n");
 	return (0);
 }

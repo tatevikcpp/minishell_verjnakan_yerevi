@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:39:15 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:13:19 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:15:13 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	heredoc_child(t_data *data, t_redirect *red, int fd)
 		free(tmp_free);
 		write(fd, s, ft_strlen(s));
 		write(fd, "\n", 1);
+		free(s);
 	}
 	close(fd);
 	exit (0);

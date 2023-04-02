@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hendl_doloar_comand.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/31 17:27:47 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:12:19 by adashyan         ###   ########.fr       */
+/*   Created: 2023/04/02 21:17:18 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/02 21:17:20 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,32 @@ typedef struct s_handle_dollar
 	int		j;
 	int		is_in_single;
 	int		is_in_double;
+	int		flag;
 	char	*ptr;
 	char	*str1;
 	char	*str_line;
 }	t_handle_dollar;
 
-static void	adjust_stat(char c, int *is_in_single, int *is_in_double)
+static void	adjust_stat(char c, t_handle_dollar *dollar)
 {
-	if (c == '\'' && !*is_in_double)
+	dollar->flag = 1;
+	if (c == '\'' && !dollar->is_in_double)
 	{
-		if (*is_in_single == 1)
-			*is_in_single = 0;
+		dollar->flag = 0;
+		(dollar->j)++;
+		if (dollar->is_in_single == 1)
+			dollar->is_in_single = 0;
 		else
-			*is_in_single = 1;
+			dollar->is_in_single = 1;
 	}
-	if (c == '"' && !*is_in_single)
+	if (c == '"' && !dollar->is_in_single)
 	{
-		if (*is_in_double == 1)
-			*is_in_double = 0;
+		dollar->flag = 0;
+		(dollar->j)++;
+		if (dollar->is_in_double == 1)
+			dollar->is_in_double = 0;
 		else
-			*is_in_double = 1;
+			dollar->is_in_double = 1;
 	}
 }
 
@@ -47,7 +53,8 @@ static void	init_t_handle_dollar(t_handle_dollar *dollar)
 	dollar->j = 0;
 	dollar->is_in_single = 0;
 	dollar->is_in_double = 0;
-	dollar->str_line = NULL;
+	dollar->flag = 1;
+	dollar->str_line = ft_strdup("");
 	dollar->ptr = NULL;
 }
 
@@ -67,6 +74,19 @@ t_handle_dollar *dollar)
 	dollar->j--;
 }
 
+int	is_endof_line_barev(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && ft_strchr(" \n\t\1", str[i]))
+		i++;
+	if (str[i] == '\0')
+		return (1);
+	return (0);
+}
+
+//echo "-n"'$PWD'
 char	*hendl_doloar_comand(t_data *data, char *test)
 {
 	t_handle_dollar	dollar;
@@ -74,23 +94,17 @@ char	*hendl_doloar_comand(t_data *data, char *test)
 	init_t_handle_dollar(&dollar);
 	while (test[dollar.j])
 	{
-		adjust_stat(test[dollar.j], &dollar.is_in_single, &dollar.is_in_double);
-		while (test[dollar.j] && ((test[dollar.j] == '"'
-					&& !dollar.is_in_single)
-				|| (test[dollar.j] == '\'' && !dollar.is_in_double)))
-			dollar.j++;
-		if (!dollar.is_in_single && test[dollar.j] == '$'
-			&& (ft_isalpha(test[dollar.j + 1]) || test[dollar.j + 1] == '_'
-				|| test[dollar.j + 1] == '?'))
+		adjust_stat(test[dollar.j], &dollar);
+		if (!dollar.is_in_single && !is_endof_line_barev(test + dollar.j + 1)
+				&& test[dollar.j] == '$')
 			hendl_doloar_comand_helper(data, test, &dollar);
-		else if (!(test[dollar.j] == '\'' && dollar.is_in_single)
-			&& !(test[dollar.j] == '"' && dollar.is_in_double))
+		else if (dollar.flag)
 		{
 			dollar.ptr = ft_substr(test, dollar.j, 1);
 			dollar.str_line = ft_strjon_free_both(dollar.str_line, dollar.ptr);
 		}
-		if (test[dollar.j] && !(test[dollar.j] == '\'' && dollar.is_in_single)
-			&& !(test[dollar.j] == '"' && dollar.is_in_double))
+		if (dollar.flag == 1 && test[dollar.j] && ((dollar.is_in_double || dollar.is_in_single)
+			|| (!dollar.is_in_double && !dollar.is_in_single && !ft_strchr("'\"", test[dollar.j]))))
 			dollar.j++;
 	}
 	return (dollar.str_line);

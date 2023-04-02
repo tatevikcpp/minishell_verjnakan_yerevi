@@ -5,38 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/01 14:38:57 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 08:48:40 by tkhechoy         ###   ########.fr       */
+/*   Created: 2023/04/02 21:17:11 by tkhechoy          #+#    #+#             */
+/*   Updated: 2023/04/02 21:17:12 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "minishell.h"
+
+static int del_one_t_env(t_env	*node)
+{
+	free(node->key);
+	free(node->val);
+	free(node);
+	return (1);
+}
 
 static void	remove_else_inner(t_pipe *pipe, char **str1)
 {
 	t_env	*head;
-	t_env	*new;
-	t_env	*tmp;
+	t_env	*prev;
 
 	head = pipe->head_env;
 	if (head == NULL)
 		return ;
 	if (head && ft_strcmp(head->key, str1[0]) == 0)
 	{
-		new = head;
-		head = head->next;
-		free(new);
+		del_one_t_env(head);
+		pipe->head_env = NULL;
+		return ;
 	}
-	new = head;
-	while (new && new->next)
+	while (head)
 	{
-		if (ft_strcmp(new->next->key, str1[0]) == 0)
+		if (ft_strcmp(head->key, str1[0]) == 0)
 		{
-			tmp = new->next;
-			new->next = tmp->next;
-			free(tmp);
+			prev->next = head->next;
+			del_one_t_env(head);
+			return ;
 		}
-		new = new->next;
+		prev = head;
+		head = head->next;
 	}
 }
 

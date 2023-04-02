@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 20:17:25 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 12:22:11 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:21:58 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_there_word_before(char *str, char *start_str)
 	i--;
 	while (&str[i] != start_str && ft_strchr(SPACES, str[i]))
 		i--;
-	if (!ft_strchr(METACHARACTER, str[i]))
+	if (!ft_strchr("|&;() ", str[i]))
 		return (1);
 	return (0);
 }
@@ -33,7 +33,7 @@ static int	is_there_word_after(char *str)
 	i++;
 	while (str[i] && ft_strchr(SPACES, str[i]))
 		i++;
-	if (!ft_strchr(METACHARACTER, str[i]))
+	if (!ft_strchr("|&;()", str[i]))
 		return (1);
 	return (0);
 }
@@ -55,7 +55,7 @@ static int	valid_pipe(char *ptr)
 				|| !is_there_word_after(&ptr[i]))
 			{
 				ft_printf(2, "minishell: syntax error near unexpected\
- token `newline'\n");
+ token `|'\n");
 				return (1);
 			}
 		}
