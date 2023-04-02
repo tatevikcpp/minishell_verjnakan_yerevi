@@ -6,14 +6,13 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 21:17:11 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 21:17:12 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:23:54 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-static int del_one_t_env(t_env	*node)
+static int	del_one_t_env(t_env	*node)
 {
 	free(node->key);
 	free(node->val);

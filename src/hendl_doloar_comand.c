@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 21:17:18 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 21:17:20 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:25:02 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,17 @@ char	*hendl_doloar_comand(t_data *data, char *test)
 	{
 		adjust_stat(test[dollar.j], &dollar);
 		if (!dollar.is_in_single && !is_endof_line_barev(test + dollar.j + 1)
-				&& test[dollar.j] == '$')
+			&& test[dollar.j] == '$')
 			hendl_doloar_comand_helper(data, test, &dollar);
 		else if (dollar.flag)
 		{
 			dollar.ptr = ft_substr(test, dollar.j, 1);
 			dollar.str_line = ft_strjon_free_both(dollar.str_line, dollar.ptr);
 		}
-		if (dollar.flag == 1 && test[dollar.j] && ((dollar.is_in_double || dollar.is_in_single)
-			|| (!dollar.is_in_double && !dollar.is_in_single && !ft_strchr("'\"", test[dollar.j]))))
+		if (dollar.flag == 1 && test[dollar.j]
+			&& ((dollar.is_in_double || dollar.is_in_single)
+				|| (!dollar.is_in_double && !dollar.is_in_single
+					&& !ft_strchr("'\"", test[dollar.j]))))
 			dollar.j++;
 	}
 	return (dollar.str_line);
