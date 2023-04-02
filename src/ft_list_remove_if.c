@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:38:57 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:40:10 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 08:48:40 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	remove_else_inner(t_pipe *pipe, char **str1)
 	}
 }
 
-int	ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)())
+int	ft_list_remove_if(t_pipe *pipe)
 {
 	int		i;
 	int		ret;

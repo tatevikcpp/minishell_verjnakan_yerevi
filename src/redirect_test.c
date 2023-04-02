@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_test.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:04:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:24:31 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/02 10:54:46 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+// // ">> askhdc"">>auisfh"
 t_redirect	*redirect_test(t_pipe *pipe)
 {
 	int			i;
@@ -31,7 +31,8 @@ t_redirect	*redirect_test(t_pipe *pipe)
 		}
 		else
 			redirect_to_command(top, &i);
-		if (top->content[i] && !(is_redirect_in(top->content[i])
+		if (top->content[i] &&  top->content[i] != '\'' && top->content[i] != '"'
+			&& !(is_redirect_in(top->content[i])
 				|| is_redirect_out(top->content[i])))
 			i++;
 	}
@@ -66,7 +67,8 @@ int	redirect_f_name_flag(t_pipe *top, t_redirect **head, int *i)
 	{
 		*i = for_space(top->content, '\'', *i);
 		*i = for_space(top->content, '"', *i);
-		if (top->content[*i] && !ft_strchr(METACHARACTER, top->content[*i]))
+		if (top->content[*i] && top->content[*i] != '"' && top->content[*i] != '\''
+			&& !ft_strchr(METACHARACTER, top->content[*i]))
 			(*i)++;
 	}
 	ft_t_redirect_add_back(head, new_t_redirect(

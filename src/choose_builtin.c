@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   choose_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:36:58 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:02:18 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/02 08:56:19 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ int	choose_builtin(t_pipe *pipe, t_data *data, int fd)
 	else if (strcmp_env("env", pipe->argv) == 0)
 		return (buildin_env_all(pipe, fd), 0);
 	else if (ft_strcmp("unset", pipe->argv[0]) == 0)
-		return (ft_list_remove_if(pipe, ft_strcmp));
+		return (ft_list_remove_if(pipe));
 	return (0);
 }

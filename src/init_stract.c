@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_stract.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adashyan <adashyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:58:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 20:14:20 by adashyan         ###   ########.fr       */
+/*   Updated: 2023/04/02 09:26:13 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,5 @@ char	*ft_get_value(char *key, t_data *ptr)
 			return (head_env->val);
 		head_env = head_env->next;
 	}
-	return ("<<chka tenc ban>>");
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:34:21 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 10:59:25 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,6 @@ int	parsing(t_data *data, char *ptr)
 	}
 	printf_pipe(data->pipe);
 	printf("pipe count %d\n", data->pipe_count);
+	printf("\n\n\n\n\n\n\n");
 	return (0);
 }

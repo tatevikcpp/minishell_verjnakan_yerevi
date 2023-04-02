@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:22:04 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 08:59:16 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define SPACES " \n\t"
 /* --------------------- */
 
-// extern int g_signal_status;
+extern int g_signal;
 
 /* ----- Structures ----- */
 typedef struct s_redirect
@@ -248,7 +248,7 @@ void		send_env(t_data *data); /* redirect.c */
 /* ----- unset ------------- */ /* builtin_export.c */
 // void unset_buildin(t_data *data, char *ptr);
 /* -------- unset utils -------- */
-int			ft_list_remove_if(t_pipe *pipe, int (*ft_strcmp)());
+int			ft_list_remove_if(t_pipe *pipe);
 // void		remove_else_inner(t_pipe *pipe, int (*ft_strcmp)(), char **str1);
 // void		remove_if_inner(t_data *data, int (*ft_strcmp)(), char *str);
 /* ------------------------------ */

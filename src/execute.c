@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:26:33 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 09:28:42 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,50 @@ char	*access_path(t_data *data, char **args)
 		if (access(str, F_OK) == 0)
 		{
 			free(exe);
+			free_matrix(split_path);
 			return (str);
 		}
 		free(str);
 		i++;
 	}
 	free(exe);
-	return (args[0]);
+	free_matrix(split_path);
+	return (NULL);
+}
+
+int	is_abs_or_relative(const char *str)
+{
+	if (str[0] == '/')
+		return (1);
+	if (str[0] == '.' && str[1] == '/')
+		return (1);
+	if (str[0] == '.' && str[1] == '.' && str[2] == '/')
+		return (1);
+	return (0);
 }
 
 int	lsh_launch(t_data *data, t_pipe *pipe)
 {
-	char	**args;
 	char	*path;
 
 	if (pipe->argv)
 	{
+		path = pipe->argv[0];
 		if (there_is_builtin(pipe) == 1)
 			exit(choose_builtin(pipe, data, 1));
-		args = pipe->argv;
-		path = access_path(data, args);
-		printf("path = %s\n", path); // TODO null
-		if (execve(path, args, data->env) == -1)
+		if (is_abs_or_relative(pipe->argv[0]))
+			path = pipe->argv[0];
+		else if (ft_get_value("PATH", data))
+			path = access_path(data, pipe->argv);
+		if (path == NULL)
 		{
-			ft_printf(2, "minishell: %s: %s\n", args[0], strerror(errno));
+			ft_printf(2, "minishell: %s:  command not found\n", pipe->argv[0]);
+			exit(127);
+		}
+		printf("path = %s\n", path); // TODO null
+		if (execve(path, pipe->argv, data->env) == -1)
+		{
+			ft_printf(2, "minishell!!!!!: %s: %s\n", pipe->argv[0], strerror(errno));
 			exit(127);
 		}
 	}

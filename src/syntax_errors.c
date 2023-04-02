@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:02:06 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 09:41:02 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,27 @@ token `%c'\n", ptr[i]);
 int	metachar_error(char *ptr)
 {
 	int	i;
+	int count;
 
 	i = 0;
+	count = 0;
 	while (ptr[i] != '\0')
 	{
 		while (ptr && (ptr[i] >= 9 && ptr[i] <= 13) && ptr[i] == 32)
 			i++;
 		while (!ft_strchr(METACHARACTER_ERROR, ptr[i]))
 			i++;
+		while (ptr[i] == '<' || ptr[i] == '>')
+		{
+			i++;
+			count++;
+		}
+		// int k = i;
+		// if (count >= 3)
+		// {
+		// 	ft_printf(2, "minishell: syntax error near unexpected token  `%c'\n", ptr[k - 1]);
+		// 	return (1);
+		// }
 		if ((ptr[i] && ptr[i] == '<' && ptr[i + 1] && ptr[i + 1] == '<')
 			|| (ptr[i] && ptr[i] == '>' && ptr[i + 1] && ptr[i + 1] == '>'))
 		{
@@ -83,3 +96,5 @@ int	metachar_error(char *ptr)
 	}
 	return (0);
 }
+
+

@@ -6,11 +6,13 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:28:43 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 09:03:12 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_signal;
 
 int	there_is_builtin(t_pipe *pipe)
 {
@@ -66,12 +68,12 @@ int	main(int ac, char **av, char **env)
 		free_data(&data);
 		free(ptr);
 		ptr = ft_readline("minishell-$ ", &data);
-		if (*ptr == '\0')
+		if ((g_signal == SIGINT && add_exit_status_in_env(&data, 1))
+			|| *ptr == '\0')
 			continue ;
 		add_history(ptr);
-		if (check_errors(ptr) != 0 && add_exit_status_in_env(&data, 258))
-			continue ;
-		if (parsing(&data, ptr) != 0 && add_exit_status_in_env(&data, 1))
+		if ((check_errors(ptr) != 0 && add_exit_status_in_env(&data, 258))
+			|| (parsing(&data, ptr) != 0 && add_exit_status_in_env(&data, 1)))
 			continue ;
 		if (data.pipe)
 			add_exit_status_in_env(&data, execute(&data));
