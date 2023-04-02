@@ -6,13 +6,13 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:49:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 09:03:12 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 12:11:02 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal;
+int	g_signal;
 
 int	there_is_builtin(t_pipe *pipe)
 {

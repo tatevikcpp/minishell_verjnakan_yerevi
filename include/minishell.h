@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 08:59:16 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 12:21:27 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define SPACES " \n\t"
 /* --------------------- */
 
-extern int g_signal;
+extern int	g_signal;
 
 /* ----- Structures ----- */
 typedef struct s_redirect
@@ -269,4 +269,7 @@ void		set_term_attr(int on_off);
 void		handle_signal(void);
 int			check_quote_double(char *ptr);
 int			add_exit_status_in_env(t_data *data, int status);
+int			check_quote_double(char *ptr);
+int			valid_redirect(char *ptr);
+
 #endif

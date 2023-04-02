@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 09:28:42 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/02 12:12:09 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ int	lsh_launch(t_data *data, t_pipe *pipe)
 			ft_printf(2, "minishell: %s:  command not found\n", pipe->argv[0]);
 			exit(127);
 		}
-		printf("path = %s\n", path); // TODO null
+		printf("path = %s\n", path);
 		if (execve(path, pipe->argv, data->env) == -1)
 		{
-			ft_printf(2, "minishell!!!!!: %s: %s\n", pipe->argv[0], strerror(errno));
+			ft_printf(2, "minishell!!!!!: %s: %s\n",
+				pipe->argv[0], strerror(errno));
 			exit(127);
 		}
 	}
