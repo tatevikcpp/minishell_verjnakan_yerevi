@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 21:09:30 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/03 11:57:40 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:42:16 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ required\n", str[1]);
 		return (1);
 	}
 	ft_printf(2, "exit\n");
-	exit(ft_atoi(str[1] + num_metka - 1));
+	if (ft_atoi(str[1]) < 0)
+		exit(ft_atoi(str[1] + num_metka - 1));
+	else 
+		exit(ft_atoi(str[1] + num_metka));
 	return (0);
 }
