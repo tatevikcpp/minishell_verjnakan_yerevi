@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 20:04:07 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 12:10:54 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/03 12:00:32 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ t_redirect	*redirect_test(t_pipe *pipe)
 	i = 0;
 	top = pipe;
 	head = NULL;
+	while (top->content[i] && ft_strchr(SPACES, top->content[i]))
+		i++;
 	while (top->content[i] != '\0')
 	{
-		while (top->content[i] && top->content[i] <= 32)
+		while (top->content[i] && ft_strchr(SPACES, top->content[i]))
 			i++;
 		if (is_redirect_in(top->content[i]) || is_redirect_out(top->content[i]))
 		{

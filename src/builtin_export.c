@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:35:51 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:22:51 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/03 11:55:21 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ static void	export_plus(char **str1, t_pipe *pipe, int len)
 	{
 		if (ft_strcmp(str, head->key) == 0)
 		{
+			str = head->val;
 			head->val = ft_strjoin(head->val, str1[1]);
+			free(str);
 			return ;
 		}
 		head = head->next;

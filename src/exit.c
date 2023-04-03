@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 21:09:30 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/01 21:11:25 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/03 11:57:40 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ required\n", str[1]);
 	}
 	if (str[2])
 	{
-		ft_printf(2, "minishell: exit: %s: too many arguments\n", str[2]);
+		ft_printf(2, "exit\nminishell: exit: %s: too many arguments\n", str[2]);
 		return (1);
 	}
 	ft_printf(2, "exit\n");
-	exit(ft_atoi(str[1] + num_metka));
+	exit(ft_atoi(str[1] + num_metka - 1));
 	return (0);
 }

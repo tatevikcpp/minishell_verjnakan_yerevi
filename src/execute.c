@@ -6,7 +6,7 @@
 /*   By: tkhechoy <tkhechoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:41:56 by tkhechoy          #+#    #+#             */
-/*   Updated: 2023/04/02 21:19:26 by tkhechoy         ###   ########.fr       */
+/*   Updated: 2023/04/03 11:56:25 by tkhechoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	lsh_launch(t_data *data, t_pipe *pipe)
 		{
 			ft_printf(2, "minishell: %s: %s\n",
 				pipe->argv[0], strerror(errno));
-			exit(127);
+			exit(errno);
 		}
 	}
 	exit(0);
